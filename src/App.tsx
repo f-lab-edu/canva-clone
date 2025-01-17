@@ -1,12 +1,11 @@
+import ButtonList from "./components/buttons/ButtonList";
+import Canvas from "./components/canvas/Canvas";
+
 function App() {
   return (
-    <div>
-      <section>
-        <button>
-          <span>Design</span>
-        </button>
-      </section>
-      <section></section>
+    <div className="w-full h-[100vh] bg-gray-200 bg-opacity-100 flex flex-row">
+      <ButtonList />
+      <Canvas />
     </div>
   );
 }
