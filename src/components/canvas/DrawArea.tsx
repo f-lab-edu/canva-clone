@@ -1,5 +1,5 @@
 function DrawArea() {
-  return <article className="w-[80%] aspect-video bg-white"></article>;
+  return <div className="w-[80%] aspect-video bg-white"></div>;
 }
 
 export default DrawArea;
