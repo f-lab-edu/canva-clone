@@ -4,7 +4,7 @@ import { ComponentProps } from "react";
 const buttonVariant = cva("", {
   variants: {
     size: {
-      xs: "py-0 px-0",
+      xs: "py-1 px-1",
       sm: "px-14 py-1.5",
       md: "px-28 py-2.5",
     },
