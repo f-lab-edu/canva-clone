@@ -1,4 +1,5 @@
 import { cva, VariantProps } from "class-variance-authority";
+import { ComponentProps } from "react";
 
 const buttonVariant = cva("", {
   variants: {
@@ -18,7 +19,8 @@ const buttonVariant = cva("", {
   },
 });
 
-export type ButtonVariant = VariantProps<typeof buttonVariant>;
+export type ButtonVariant = VariantProps<typeof buttonVariant> &
+  ComponentProps<"button">;
 type buttonProps = {
   className?: string;
   imgSrc?: string;
