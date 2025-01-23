@@ -23,6 +23,7 @@ function Buttons({ activeType, handleClickButton }: ButtonsProps) {
 
         return (
           <Button
+            key={buttonType}
             className={`flex flex-col items-center justify-center gap-1 ${
               buttonType === activeType && "bg-white rounded-lg"
             }`}

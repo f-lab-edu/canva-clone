@@ -6,3 +6,7 @@ export type PaletteType =
   | "Uploads"
   | "Charts"
   | null;
+
+export type ActivePaletteProps = {
+  inactivePalette: () => void;
+};
