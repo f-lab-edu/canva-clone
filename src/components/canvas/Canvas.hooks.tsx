@@ -1,9 +1,11 @@
 import { useState } from "react";
 import { PageType } from "../../type/page";
+import { TextBoxType } from "../../type/textBox";
 
 const firstPage = {
-  id: Date.now(),
+  id: 123,
   title: "Page 1",
+  textBoxs: [],
 };
 
 function useCanvas() {
@@ -19,6 +21,7 @@ function useCanvas() {
         title: `Page ${
           Number(pageList[pageList.length - 1].title.replace(regex, "")) + 1
         }`,
+        textBoxs: [],
       };
     } else newPage = page;
 
@@ -41,10 +44,48 @@ function useCanvas() {
     setPageList((prevPageList) =>
       prevPageList.filter((page) => page.id !== id)
     );
-
   const getPageLength = () => pageList.length;
 
-  return { pageList, addPage, copyPageById, removePageById, getPageLength };
+  const addTextBox = (pageId: number, newTextBox: TextBoxType) => {
+    setPageList((prevPageList) =>
+      prevPageList.map((page) => {
+        if (page.id !== pageId) return page;
+
+        return {
+          ...page,
+          textBoxs: [...page.textBoxs, newTextBox],
+        };
+      })
+    );
+  };
+  const updateTextBox = (pageId: number, textBox: TextBoxType) => {
+    setPageList((prevPageList) =>
+      prevPageList.map((page) => {
+        if (page.id !== pageId) return page;
+
+        const updatedTextBoxs = page.textBoxs.map((prevTextBox) => {
+          if (prevTextBox.id !== textBox.id) return prevTextBox;
+
+          return textBox;
+        });
+
+        return {
+          ...page,
+          textBoxs: updatedTextBoxs,
+        };
+      })
+    );
+  };
+
+  return {
+    pageList,
+    addPage,
+    copyPageById,
+    removePageById,
+    getPageLength,
+    updateTextBox,
+    addTextBox,
+  };
 }
 
 export default useCanvas;

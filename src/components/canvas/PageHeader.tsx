@@ -4,21 +4,21 @@ import { PageType } from "../../type/page";
 interface PageHeaderProps {
   page: PageType;
   addPage: (page: PageType | null) => void;
-  copyPage: (pastePageId: number) => void;
-  removePage: (removePageId: number) => void;
+  copyPageById: (pastePageId: number) => void;
+  removePageById: (removePageId: number) => void;
   getPageLength: () => number;
 }
 
 function PageHeader({
   page,
   addPage,
-  copyPage,
-  removePage,
+  copyPageById,
+  removePageById,
   getPageLength,
 }: PageHeaderProps) {
   const handleClickAddPage = () => addPage(null);
-  const handleClickPastePage = () => copyPage(page.id);
-  const handleClickRemovePage = () => removePage(page.id);
+  const handleClickPastePage = () => copyPageById(page.id);
+  const handleClickRemovePage = () => removePageById(page.id);
 
   return (
     <div className="w-[80%] flex flex-row justify-between">
