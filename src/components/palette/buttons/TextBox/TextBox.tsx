@@ -1,6 +1,6 @@
 import { FormEvent, MouseEvent, useRef, useState } from "react";
 import { useCanvasStore } from "../../../../store/canvas.store";
-import { useHistoryStore } from "../../../../store/history.store";
+import { useUndoStore } from "../../../../store/undo.store";
 import { HistoryType } from "../../../../type/history.type";
 import { TextBoxType } from "../../../../type/textBox.type";
 
@@ -17,7 +17,7 @@ function TextBox({ pageId, textBox }: TextBoxProps) {
   const [position, setPosition] = useState(textBox.position);
   const [isActive, setIsActive] = useState(false);
   const updateTextBox = useCanvasStore((state) => state.updateTextBox);
-  const addHistory = useHistoryStore((state) => state.addHistory);
+  const addHistory = useUndoStore((state) => state.addHistoryOfUndo);
 
   const handleMouseUp = () => {
     setIsDragging(false);
