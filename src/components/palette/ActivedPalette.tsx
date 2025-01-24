@@ -1,24 +1,18 @@
 import { IoClose } from "react-icons/io5";
-import { PaletteType } from "../../type/palette";
-import { TextBoxType } from "../../type/textBox";
+import { PaletteType } from "../../type/palette.type";
+import TextPalette from "./buttons/TextBox/TextPalette";
 import ChartsPalette from "./palettes/ChartsPalette";
 import DesignPalette from "./palettes/DesignPalette";
 import DrawPalette from "./palettes/DrawPalette";
 import ElementsPalette from "./palettes/ElementsPalette";
-import TextPalette from "./palettes/TextBox/TextPalette";
 import UploadsPalette from "./palettes/UploadsPalette";
 
 interface ActivedPalette {
   activeType: PaletteType;
   inactivePalette: () => void;
-  addTextBox: (pageId: number, textBox: TextBoxType) => void;
 }
 
-function ActivedPalette({
-  activeType,
-  inactivePalette,
-  addTextBox,
-}: ActivedPalette) {
+function ActivedPalette({ activeType, inactivePalette }: ActivedPalette) {
   const getTargetPalette = () => {
     let targetPalette = null;
 
@@ -30,7 +24,7 @@ function ActivedPalette({
         targetPalette = <ElementsPalette />;
         break;
       case "Text":
-        targetPalette = <TextPalette addTextBox={addTextBox} />;
+        targetPalette = <TextPalette />;
         break;
       case "Draw":
         targetPalette = <DrawPalette />;

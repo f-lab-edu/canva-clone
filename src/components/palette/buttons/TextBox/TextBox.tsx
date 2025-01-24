@@ -1,21 +1,57 @@
-import { FormEvent, MouseEvent, useState } from "react";
-import { TextBoxType } from "../../../../type/textBox";
+import { FormEvent, MouseEvent, useRef, useState } from "react";
+import { useCanvasStore } from "../../../../store/canvas.store";
+import { useHistoryStore } from "../../../../store/history.store";
+import { HistoryType } from "../../../../type/history.type";
+import { TextBoxType } from "../../../../type/textBox.type";
 
 interface TextBoxProps {
   pageId: number;
   textBox: TextBoxType;
-  updateTextBox: (pageId: number, textBox: TextBoxType) => void;
 }
 
-function TextBox({ pageId, textBox, updateTextBox }: TextBoxProps) {
+function TextBox({ pageId, textBox }: TextBoxProps) {
+  const textBoxRef = useRef(null);
+  const [text, setText] = useState(textBox.content);
   const [isDragging, setIsDragging] = useState(false);
   const [offset, setOffset] = useState({ x: 0, y: 0 });
   const [position, setPosition] = useState(textBox.position);
   const [isActive, setIsActive] = useState(false);
+  const updateTextBox = useCanvasStore((state) => state.updateTextBox);
+  const addHistory = useHistoryStore((state) => state.addHistory);
 
   const handleMouseUp = () => {
     setIsDragging(false);
     setIsActive(false);
+
+    if (text === textBox.content) return;
+
+    const newContentTextBox: TextBoxType = {
+      ...textBox,
+      content: text,
+    };
+
+    updateTextBox(pageId, newContentTextBox);
+
+    const textBoxHistory: HistoryType = {
+      id: textBox.id,
+      child: null,
+      content: textBox,
+    };
+    const history: HistoryType = {
+      id: 2,
+      content: null,
+      child: {
+        id: pageId,
+        content: null,
+        child: {
+          id: 1,
+          content: null,
+          child: textBoxHistory,
+        },
+      },
+    };
+
+    addHistory(history);
   };
   const handleMouseDown = (e: MouseEvent) => {
     setIsDragging(true);
@@ -38,16 +74,9 @@ function TextBox({ pageId, textBox, updateTextBox }: TextBoxProps) {
     e.stopPropagation();
     setIsActive(true);
   };
-  // const handleClickGlobal = () => setIsActive(false);
   const handleOnInput = (e: FormEvent<HTMLDivElement>) => {
-    const text = e.currentTarget.innerText;
-
-    const newContentTextBox = {
-      ...textBox,
-      content: text,
-    };
-    updateTextBox(pageId, newContentTextBox);
-    // setTextContent(e.currentTarget.innerText);
+    const newText = e.currentTarget.innerText;
+    setText(newText);
   };
 
   return (
@@ -61,6 +90,7 @@ function TextBox({ pageId, textBox, updateTextBox }: TextBoxProps) {
       onMouseUp={handleMouseUp}
     >
       <div
+        ref={textBoxRef}
         className={`absolute p-2 resize cursor-auto select-text outline-none ${
           isActive && "border border-gray-400 border-dashed"
         }`}

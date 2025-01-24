@@ -1,5 +1,5 @@
 import Button from "../../../cva/Button/Button";
-import { PaletteType } from "../../../type/palette";
+import { PaletteType } from "../../../type/palette.type";
 
 const BUTTONS: PaletteType[] = [
   "Design",
