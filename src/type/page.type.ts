@@ -1,4 +1,4 @@
-import { TextBoxType } from "./textBox";
+import { TextBoxType } from "./textBox.type";
 
 export interface PageType {
   id: number;

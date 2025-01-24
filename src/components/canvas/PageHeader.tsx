@@ -1,24 +1,49 @@
 import Button from "../../cva/Button/Button";
-import { PageType } from "../../type/page";
+import { useCanvasStore } from "../../store/canvas.store";
+import { useHistoryStore } from "../../store/history.store";
+import { HistoryType } from "../../type/history.type";
+import { PageType } from "../../type/page.type";
 
 interface PageHeaderProps {
   page: PageType;
-  addPage: (page: PageType | null) => void;
-  copyPageById: (pastePageId: number) => void;
-  removePageById: (removePageId: number) => void;
-  getPageLength: () => number;
 }
 
-function PageHeader({
-  page,
-  addPage,
-  copyPageById,
-  removePageById,
-  getPageLength,
-}: PageHeaderProps) {
-  const handleClickAddPage = () => addPage(null);
-  const handleClickPastePage = () => copyPageById(page.id);
-  const handleClickRemovePage = () => removePageById(page.id);
+function PageHeader({ page }: PageHeaderProps) {
+  const pageList = useCanvasStore((state) => state.pageList);
+  const addPage = useCanvasStore((state) => state.addPage);
+  const copyPageById = useCanvasStore((state) => state.copyPageById);
+  const removePage = useCanvasStore((state) => state.removePage);
+  const addHistory = useHistoryStore((state) => state.addHistory);
+
+  const handleClickAddPage = () => {
+    const newPage = addPage(null);
+    if (!newPage) return;
+    addHistoryAtStore(1, newPage);
+  };
+  const handleClickPastePage = () => {
+    const newPage = copyPageById(page.id);
+    if (!newPage) return;
+    addHistoryAtStore(1, newPage);
+  };
+  const handleClickRemovePage = () => {
+    removePage(page);
+
+    addHistoryAtStore(3, page);
+  };
+  const addHistoryAtStore = (undoType: 1 | 2 | 3, childPage: PageType) => {
+    const pageHistory: HistoryType = {
+      id: page.id,
+      child: null,
+      content: childPage,
+    };
+    const history: HistoryType = {
+      id: undoType,
+      content: null,
+      child: pageHistory,
+    };
+
+    addHistory(history);
+  };
 
   return (
     <div className="w-[80%] flex flex-row justify-between">
@@ -27,7 +52,7 @@ function PageHeader({
         <span className="text-sm text-gray-500"> - Add page title</span>
       </h3>
       <section className="flex flex-row gap-x-2">
-        {getPageLength() !== 1 && (
+        {pageList.length !== 1 && (
           <Button
             className="flex flex-col items-center justify-center gap-1"
             imgSrc="/src/assets/remove-page.icon.svg"
