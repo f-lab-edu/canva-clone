@@ -1,11 +1,11 @@
 import { useCanvasStore } from "../../../../store/canvas.store";
-import { useHistoryStore } from "../../../../store/history.store";
+import { useUndoStore } from "../../../../store/undo.store";
 import { HistoryType } from "../../../../type/history.type";
 import { TextBoxType } from "../../../../type/textBox.type";
 
 function TextPalette() {
   const addTextBox = useCanvasStore((state) => state.addTextBox);
-  const addHistory = useHistoryStore((state) => state.addHistory);
+  const addHistory = useUndoStore((state) => state.addHistoryOfUndo);
 
   const handleClickAddTextBox = () => {
     const pageId = 123;

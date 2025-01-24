@@ -1,20 +1,20 @@
 import { create } from "zustand";
 import { HistoryType } from "../type/history.type";
 
-interface HistoryStore {
+interface RedoStore {
   history: HistoryType[];
-  addHistory: (history: HistoryType) => void;
-  undo: () => HistoryType | null;
+  addHistoryOfRedo: (history: HistoryType) => void;
+  redo: () => HistoryType | null;
 }
 
 // 동작(CRUD) - PageId - 콘텐츠타입(textBox | chart | element | draw) -> content
-export const useHistoryStore = create<HistoryStore>((set) => ({
+export const useRedoStore = create<RedoStore>((set) => ({
   history: [],
-  addHistory: (history: HistoryType) =>
+  addHistoryOfRedo: (history: HistoryType) =>
     set((state) => ({
       history: [...state.history, history],
     })),
-  undo: () => {
+  redo: () => {
     let lastHistory = null;
     set((state) => {
       const returnData = {

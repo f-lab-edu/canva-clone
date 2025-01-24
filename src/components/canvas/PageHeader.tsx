@@ -1,6 +1,6 @@
 import Button from "../../cva/Button/Button";
 import { useCanvasStore } from "../../store/canvas.store";
-import { useHistoryStore } from "../../store/history.store";
+import { useUndoStore } from "../../store/undo.store";
 import { HistoryType } from "../../type/history.type";
 import { PageType } from "../../type/page.type";
 
@@ -13,7 +13,7 @@ function PageHeader({ page }: PageHeaderProps) {
   const addPage = useCanvasStore((state) => state.addPage);
   const copyPageById = useCanvasStore((state) => state.copyPageById);
   const removePage = useCanvasStore((state) => state.removePage);
-  const addHistory = useHistoryStore((state) => state.addHistory);
+  const addHistory = useUndoStore((state) => state.addHistoryOfUndo);
 
   const handleClickAddPage = () => {
     const newPage = addPage(null);
