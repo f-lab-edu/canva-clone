@@ -3,6 +3,7 @@ import { useCanvasStore } from "../../../../store/canvas.store";
 import { useUndoStore } from "../../../../store/undo.store";
 import { HistoryType } from "../../../../type/history.type";
 import { TextBoxType } from "../../../../type/textBox.type";
+import ResizingButtonList from "./ResizingButtonList";
 
 interface TextBoxProps {
   pageId: number;
@@ -12,17 +13,19 @@ interface TextBoxProps {
 function TextBox({ pageId, textBox }: TextBoxProps) {
   const textBoxRef = useRef(null);
   const [text, setText] = useState(textBox.content);
+  const [localSize, setLocalSize] = useState(textBox.size);
   const [isDragging, setIsDragging] = useState(false);
   const [offset, setOffset] = useState({ x: 0, y: 0 });
   const [position, setPosition] = useState(textBox.position);
   const [isActive, setIsActive] = useState(false);
+
   const updateTextBox = useCanvasStore((state) => state.updateTextBox);
   const addHistory = useUndoStore((state) => state.addHistoryOfUndo);
 
   const handleMouseUp = () => {
     setIsDragging(false);
-    setIsActive(false);
 
+    setTextBoxSize(textBox.position, localSize);
     if (text === textBox.content) return;
 
     const newContentTextBox: TextBoxType = {
@@ -55,7 +58,6 @@ function TextBox({ pageId, textBox }: TextBoxProps) {
   };
   const handleMouseDown = (e: MouseEvent) => {
     setIsDragging(true);
-    setIsActive(true);
     setOffset({
       x: e.clientX - position.x,
       y: e.clientY - position.y,
@@ -70,20 +72,29 @@ function TextBox({ pageId, textBox }: TextBoxProps) {
     });
     setIsActive(true);
   };
-  const handleClickTextBox = (e: MouseEvent) => {
-    e.stopPropagation();
-    setIsActive(true);
-  };
   const handleOnInput = (e: FormEvent<HTMLDivElement>) => {
     const newText = e.currentTarget.innerText;
     setText(newText);
   };
+  const handleMouseEnter = () => setIsActive(true);
+  const handleMouseLeave = () => {
+    setIsActive(false);
+
+    setTextBoxSize(textBox.position, localSize);
+  };
+  const setTextBoxSize = (
+    position: { x: number; y: number },
+    size: { width: number; height: number }
+  ) => {
+    const newTextBox: TextBoxType = {
+      ...textBox,
+      position,
+      size,
+    };
+    updateTextBox(pageId, newTextBox);
+  };
 
   return (
-    // <div
-    //   className="w-[100vw] h-[100vh] absolute left-0 top-0"
-    //   onClick={handleClickGlobal}
-    // >
     <div
       className="w-full h-full relative"
       onMouseMove={handleMouseMove}
@@ -95,19 +106,31 @@ function TextBox({ pageId, textBox }: TextBoxProps) {
           isActive && "border border-gray-400 border-dashed"
         }`}
         style={{
+          width: `${localSize.width}px`,
+          height: `${localSize.height}px`,
           left: `${position.x}px`,
           top: `${position.y}px`,
         }}
         contentEditable
         suppressContentEditableWarning
         onMouseDown={handleMouseDown}
-        onClick={handleClickTextBox}
+        onMouseEnter={handleMouseEnter}
+        onMouseLeave={handleMouseLeave}
         onInput={handleOnInput}
       >
+        {isActive && (
+          <ResizingButtonList
+            textBox={textBox}
+            localSize={localSize}
+            setLocalSize={setLocalSize}
+            position={position}
+            setPosition={setPosition}
+            setTextBoxSize={setTextBoxSize}
+          />
+        )}
         {textBox.content}
       </div>
     </div>
-    // </div>
   );
 }
 

@@ -16,6 +16,10 @@ function TextPalette() {
         x: 150,
         y: 200,
       },
+      size: {
+        width: 150,
+        height: 40,
+      },
     };
 
     addTextBox(pageId, textBox);
