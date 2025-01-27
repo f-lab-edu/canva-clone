@@ -1,59 +1,59 @@
 import { FormEvent, useState } from "react";
 import { useCanvasStore } from "../store/canvas.store";
-import { useUndoStore } from "../store/undo.store";
-import { HistoryType } from "../type/history.type";
 import { Position, Size, TextBoxType } from "../type/textBox.type";
+import useHistory from "./History.hook";
 
 interface TextBoxHookProps {
   pageId: number;
   textBox: TextBoxType;
+  localSize: Size;
+  setLocalSize: React.Dispatch<React.SetStateAction<Size>>;
 }
 
-function useTextBox({ pageId, textBox }: TextBoxHookProps) {
+function useTextBox({
+  pageId,
+  textBox,
+  localSize,
+  setLocalSize,
+}: TextBoxHookProps) {
   const [text, setText] = useState(textBox.content);
-  const [localSize, setLocalSize] = useState(textBox.size);
+
   const [isDragging, setIsDragging] = useState(false);
   const [offset, setOffset] = useState({ x: 0, y: 0 });
   const [position, setPosition] = useState(textBox.position);
   const [isActive, setIsActive] = useState(false);
 
   const updateTextBox = useCanvasStore((state) => state.updateTextBox);
-  const addHistory = useUndoStore((state) => state.addHistoryOfUndo);
+
+  const { buildHistory, addUndoHistory } = useHistory();
 
   const handleMouseUp = () => {
     setIsDragging(false);
 
-    console.log("handleMouseUp");
-    setTextBoxSize(textBox.position, localSize);
-    if (text === textBox.content) return;
+    if (text !== textBox.content) addTextBoxContentHistory();
 
+    if (localSize !== textBox.size) addTextBoxSizeAndPositionHistory();
+    else setTextBoxSize(textBox.position, localSize);
+  };
+  const addTextBoxSizeAndPositionHistory = () => {
+    const history = buildHistory(2, null, pageId, textBox);
+    addUndoHistory(history);
+
+    const newSizeTextBox: TextBoxType = {
+      ...textBox,
+      size: localSize.size,
+      position,
+    };
+    updateTextBox(pageId, newSizeTextBox);
+  };
+  const addTextBoxContentHistory = () => {
+    const history = buildHistory(2, null, pageId, textBox);
+    addUndoHistory(history);
     const newContentTextBox: TextBoxType = {
       ...textBox,
       content: text,
     };
-
     updateTextBox(pageId, newContentTextBox);
-
-    const textBoxHistory: HistoryType = {
-      id: textBox.id,
-      child: null,
-      content: textBox,
-    };
-    const history: HistoryType = {
-      id: 2,
-      content: null,
-      child: {
-        id: pageId,
-        content: null,
-        child: {
-          id: 1,
-          content: null,
-          child: textBoxHistory,
-        },
-      },
-    };
-
-    addHistory(history);
   };
   const handleMouseDown = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
     setIsDragging(true);
@@ -78,7 +78,7 @@ function useTextBox({ pageId, textBox }: TextBoxHookProps) {
   const handleMouseEnter = () => setIsActive(true);
   const handleMouseLeave = () => {
     setIsActive(false);
-    console.log("handleMouseLeave");
+
     setTextBoxSize(textBox.position, localSize);
   };
   const setTextBoxSize = (position: Position, size: Size) => {

@@ -1,3 +1,4 @@
+import { useState } from "react";
 import useTextBox from "../../../../hook/TextBox.hook";
 import { TextBoxType } from "../../../../type/textBox.type";
 import ResizingButtonList from "./ResizingButtonList";
@@ -8,12 +9,12 @@ interface TextBoxProps {
 }
 
 function TextBox({ pageId, textBox }: TextBoxProps) {
+  const [localSize, setLocalSize] = useState(textBox.size);
+
   const {
     position,
     setPosition,
     setTextBoxSize,
-    localSize,
-    setLocalSize,
     isActive,
     handleMouseDown,
     handleMouseEnter,
@@ -21,7 +22,9 @@ function TextBox({ pageId, textBox }: TextBoxProps) {
     handleMouseMove,
     handleMouseUp,
     handleOnInput,
-  } = useTextBox({ pageId, textBox });
+  } = useTextBox({ pageId, textBox, localSize, setLocalSize });
+
+  console.log("localSize: ", localSize);
 
   return (
     <div

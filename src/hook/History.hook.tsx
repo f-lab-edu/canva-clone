@@ -23,7 +23,7 @@ function useHistory() {
     undoType: 1 | 2 | 3,
     childPage: PageType | null,
     pageId: number,
-    childTextBox: PageType | null
+    childTextBox: TextBoxType | null
   ): HistoryType => {
     const history: HistoryType = {
       id: undoType,
@@ -117,10 +117,12 @@ function useHistory() {
        */
       if (contentType.id === 1) {
         const textBoxContent = contentHistory.content as TextBoxType;
+
         const history = {
           ...lastHistory,
           id: actionType === 2 ? actionType : actionType === 1 ? 3 : 1,
         };
+
         excuteHistory(
           actionType,
           () => removedTextBox(pageId, textBoxContent),

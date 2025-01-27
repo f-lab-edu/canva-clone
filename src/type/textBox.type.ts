@@ -6,6 +6,7 @@ export type TextBoxType = {
 };
 
 export interface Size {
+  size: Size;
   width: number;
   height: number;
 }
