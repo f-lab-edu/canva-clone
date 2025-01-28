@@ -1,9 +1,14 @@
-export type TextBoxType = {
+export interface Element {
+  pageId: number;
   id: number;
   position: Position;
-  content: string;
   size: Size;
-};
+  type: "textBox" | "chart";
+}
+
+export interface TextBoxType extends Element {
+  content: string;
+}
 
 export interface Size {
   width: number;

@@ -1,7 +1,6 @@
 import Button from "../../cva/Button/Button";
+import useHistory from "../../hook/History.hook";
 import { useCanvasStore } from "../../store/canvas.store";
-import { useUndoStore } from "../../store/undo.store";
-import { HistoryType } from "../../type/history.type";
 import { PageType } from "../../type/page.type";
 
 interface PageHeaderProps {
@@ -13,36 +12,27 @@ function PageHeader({ page }: PageHeaderProps) {
   const addPage = useCanvasStore((state) => state.addPage);
   const copyPageById = useCanvasStore((state) => state.copyPageById);
   const removePage = useCanvasStore((state) => state.removePage);
-  const addHistory = useUndoStore((state) => state.addHistoryOfUndo);
+  const { addUndoHistory, buildHistory } = useHistory();
 
   const handleClickAddPage = () => {
     const newPage = addPage(null);
     if (!newPage) return;
-    addHistoryAtStore(1, newPage);
+
+    const history = buildHistory("create", newPage, null);
+    addUndoHistory(history);
   };
   const handleClickPastePage = () => {
     const newPage = copyPageById(page.id);
     if (!newPage) return;
-    addHistoryAtStore(1, newPage);
+
+    const history = buildHistory("create", newPage, null);
+    addUndoHistory(history);
   };
   const handleClickRemovePage = () => {
     removePage(page);
 
-    addHistoryAtStore(3, page);
-  };
-  const addHistoryAtStore = (undoType: 1 | 2 | 3, childPage: PageType) => {
-    const pageHistory: HistoryType = {
-      id: page.id,
-      child: null,
-      content: childPage,
-    };
-    const history: HistoryType = {
-      id: undoType,
-      content: null,
-      child: pageHistory,
-    };
-
-    addHistory(history);
+    const history = buildHistory("delete", page, null);
+    addUndoHistory(history);
   };
 
   return (

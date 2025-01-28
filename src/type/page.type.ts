@@ -1,7 +1,7 @@
-import { TextBoxType } from "./textBox.type";
+import { Element } from "./element.type";
 
 export interface PageType {
   id: number;
   title: string;
-  textBoxs: TextBoxType[];
+  elements: Element[];
 }
