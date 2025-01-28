@@ -1,13 +1,12 @@
 import { useCanvasStore } from "../store/canvas.store";
-import { useRedoStore } from "../store/redo.store";
-import { useUndoStore } from "../store/undo.store";
+import { useHistoryStore } from "../store/history.store";
 import { Element } from "../type/element.type";
 import { HistoryType } from "../type/history.type";
 import { PageType } from "../type/page.type";
 
 function useHistory() {
-  const { undo, history: undoHistory, addHistoryOfUndo } = useUndoStore();
-  const { redo, history: redoHistory, addHistoryOfRedo } = useRedoStore();
+  const { getLastHistoryByIsUndo, redoHistory, undoHistory, addHistory } =
+    useHistoryStore();
 
   const removePageById = useCanvasStore((state) => state.removePage);
   const updatePageByPage = useCanvasStore((state) => state.updatePage);
@@ -19,7 +18,7 @@ function useHistory() {
 
   const getElementById = useCanvasStore((state) => state.getElementById);
 
-  const addUndoHistory = (history: HistoryType) => addHistoryOfUndo(history);
+  const addUndoHistory = (history: HistoryType) => addHistory(history, true);
 
   const buildHistory = (
     undoType: "create" | "modify" | "delete",
@@ -42,19 +41,12 @@ function useHistory() {
   };
 
   const historyProcess = (isUndo: boolean) => {
-    console.log(`${isUndo ? "== undo ==" : "== redo =="}`);
-    console.log("undo history", undoHistory);
-    console.log("redo history", redoHistory);
-
-    const lastHistory = isUndo ? undo() : redo();
-
-    console.log("lastHistory: ", lastHistory);
+    const lastHistory = getLastHistoryByIsUndo(isUndo);
+    console.log(undoHistory, lastHistory, redoHistory);
 
     if (!lastHistory) return;
 
     const actionType = lastHistory.undoType as "create" | "modify" | "delete";
-
-    console.log(lastHistory.content);
 
     // 페이지에 관한 동작
     if (lastHistory.content && lastHistory.type === "page") {
@@ -64,8 +56,7 @@ function useHistory() {
         () => (isUndo ? removePageById(content) : addPage(content)),
         () => updatePageByPage(content),
         () => (isUndo ? addPage(content) : removePageById(content)),
-        lastHistory,
-        isUndo ? addHistoryOfRedo : addHistoryOfUndo
+        () => addHistory(lastHistory, isUndo)
       );
       return;
     } else {
@@ -77,18 +68,12 @@ function useHistory() {
         getElementById(content.pageId, content.id)
       );
 
-      console.log(
-        `${isUndo ? "if clicked undo: " : "if clicked redo"}`,
-        lastHistory
-      );
-
       excuteHistory(
         actionType,
         () => (isUndo ? removedElement(content) : addElement(content)),
         () => updatedElement(content),
         () => (isUndo ? addElement(content) : removedElement(content)),
-        history,
-        isUndo ? addHistoryOfRedo : addHistoryOfUndo
+        () => addHistory(history, !isUndo)
       );
       return;
     }
@@ -98,8 +83,7 @@ function useHistory() {
     removeFun: () => void,
     updateFun: () => void,
     addFun: () => void,
-    history: HistoryType | null,
-    addHistory: (history: HistoryType) => void
+    addHistory: () => void
   ) => {
     // 삭제(생성)
     if (actionType === "create") removeFun();
@@ -108,7 +92,7 @@ function useHistory() {
     // 재생성(삭제)
     else if (actionType === "delete") addFun();
 
-    if (history) addHistory(history);
+    addHistory();
   };
 
   return {

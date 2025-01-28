@@ -38,7 +38,7 @@ function useTextBox({ textBox }: TextBoxHookProps) {
   };
   const addTextBoxContentHistory = () => {
     const history = buildHistory("modify", null, textBox);
-    console.log(textBox);
+
     addUndoHistory(history);
 
     const newContentTextBox: TextBoxType = {
@@ -68,7 +68,6 @@ function useTextBox({ textBox }: TextBoxHookProps) {
     setText(newText);
   };
   const handleBlur = () => {
-    console.log("== handle blur ==\n", text, textBox.content);
     if (text !== textBox.content) addTextBoxContentHistory();
   };
   const handleMouseEnter = () => setIsActive(true);
