@@ -1,9 +1,9 @@
 import { useCanvasStore } from "../store/canvas.store";
 import { useRedoStore } from "../store/redo.store";
 import { useUndoStore } from "../store/undo.store";
+import { TextBoxType } from "../type/element.type";
 import { HistoryType } from "../type/history.type";
 import { PageType } from "../type/page.type";
-import { TextBoxType } from "../type/textBox.type";
 
 function useHistory() {
   const { undo, history: undoHistory, addHistoryOfUndo } = useUndoStore();

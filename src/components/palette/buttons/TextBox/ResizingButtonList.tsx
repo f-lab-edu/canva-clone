@@ -1,4 +1,4 @@
-import { Position, Size, TextBoxType } from "../../../../type/textBox.type";
+import { Position, Size, TextBoxType } from "../../../../type/element.type";
 import ResizingButton from "./ResizingButton";
 
 interface ResizingButtonListProps {

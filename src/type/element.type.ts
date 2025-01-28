@@ -1,9 +1,13 @@
-export type TextBoxType = {
+export interface Element {
+  pageId: number;
   id: number;
   position: Position;
-  content: string;
   size: Size;
-};
+}
+
+export interface TextBoxType extends Element {
+  content: string;
+}
 
 export interface Size {
   size: Size;

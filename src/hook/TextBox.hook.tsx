@@ -1,23 +1,16 @@
-import { FormEvent, useState } from "react";
+import { FormEvent, useEffect, useState } from "react";
 import { useCanvasStore } from "../store/canvas.store";
-import { Position, Size, TextBoxType } from "../type/textBox.type";
+import { Position, Size, TextBoxType } from "../type/element.type";
 import useHistory from "./History.hook";
 
 interface TextBoxHookProps {
   pageId: number;
   textBox: TextBoxType;
-  localSize: Size;
-  setLocalSize: React.Dispatch<React.SetStateAction<Size>>;
 }
 
-function useTextBox({
-  pageId,
-  textBox,
-  localSize,
-  setLocalSize,
-}: TextBoxHookProps) {
+function useTextBox({ pageId, textBox }: TextBoxHookProps) {
   const [text, setText] = useState(textBox.content);
-
+  const [localSize, setLocalSize] = useState(textBox.size);
   const [isDragging, setIsDragging] = useState(false);
   const [offset, setOffset] = useState({ x: 0, y: 0 });
   const [position, setPosition] = useState(textBox.position);
@@ -41,9 +34,10 @@ function useTextBox({
 
     const newSizeTextBox: TextBoxType = {
       ...textBox,
-      size: localSize.size,
+      size: localSize,
       position,
     };
+
     updateTextBox(pageId, newSizeTextBox);
   };
   const addTextBoxContentHistory = () => {
@@ -53,6 +47,7 @@ function useTextBox({
       ...textBox,
       content: text,
     };
+
     updateTextBox(pageId, newContentTextBox);
   };
   const handleMouseDown = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
@@ -87,9 +82,24 @@ function useTextBox({
       position,
       size,
     };
+
     updateTextBox(pageId, newTextBox);
   };
+
+  useEffect(() => {
+    setPosition(textBox.position);
+  }, [textBox.position]);
+
+  useEffect(() => {
+    setLocalSize(textBox.size);
+  }, [textBox.size]);
+
+  useEffect(() => {
+    setText(textBox.content);
+  }, [textBox.content]);
+
   return {
+    text,
     position,
     setPosition,
     setTextBoxSize,

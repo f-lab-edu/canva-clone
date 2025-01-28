@@ -1,7 +1,7 @@
 import { useCanvasStore } from "../../../../store/canvas.store";
 import { useUndoStore } from "../../../../store/undo.store";
+import { TextBoxType } from "../../../../type/element.type";
 import { HistoryType } from "../../../../type/history.type";
-import { TextBoxType } from "../../../../type/textBox.type";
 
 function TextPalette() {
   const addTextBox = useCanvasStore((state) => state.addTextBox);

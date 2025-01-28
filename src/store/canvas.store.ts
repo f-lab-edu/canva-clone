@@ -1,6 +1,6 @@
 import { create } from "zustand";
+import { TextBoxType } from "../type/element.type";
 import { PageType } from "../type/page.type";
-import { TextBoxType } from "../type/textBox.type";
 
 interface CanvasStoreType {
   pageList: PageType[];
@@ -85,7 +85,7 @@ export const useCanvasStore = create<CanvasStoreType>((set) => ({
         };
       }),
     })),
-  updateTextBox: (pageId: number, targetTextBox: TextBoxType) =>
+  updateTextBox: (pageId: number, targetTextBox: TextBoxType) => {
     set((state) => ({
       pageList: state.pageList.map((page) => {
         if (page.id !== pageId) return page;
@@ -101,7 +101,8 @@ export const useCanvasStore = create<CanvasStoreType>((set) => ({
           textBoxs: updatedTextBox,
         };
       }),
-    })),
+    }));
+  },
   removeTextBox: (pageId: number, targetTextBox: TextBoxType) =>
     set((state) => ({
       pageList: state.pageList.map((page) => {

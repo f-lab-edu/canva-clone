@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Position, Size, TextBoxType } from "../../../../type/textBox.type";
+import { Position, Size, TextBoxType } from "../../../../type/element.type";
 
 interface ResizingButtonProps {
   direction: {
@@ -68,7 +68,9 @@ function ResizingButton({
     }
     setPosition(newPosition);
 
-    setLocalSize({ width: newWidth, height: newHeight });
+    const size = { width: newWidth, height: newHeight } as Size;
+
+    setLocalSize(size);
   };
 
   return (
