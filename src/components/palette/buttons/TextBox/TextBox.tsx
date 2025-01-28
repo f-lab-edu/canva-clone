@@ -3,15 +3,13 @@ import { TextBoxType } from "../../../../type/element.type";
 import ResizingButtonList from "./ResizingButtonList";
 
 interface TextBoxProps {
-  pageId: number;
   textBox: TextBoxType;
 }
 
-function TextBox({ pageId, textBox }: TextBoxProps) {
+function TextBox({ textBox }: TextBoxProps) {
   const {
-    text,
-    position,
-    setPosition,
+    localPos,
+    setLocalPos,
     localSize,
     setLocalSize,
     setTextBoxSize,
@@ -21,8 +19,9 @@ function TextBox({ pageId, textBox }: TextBoxProps) {
     handleMouseLeave,
     handleMouseMove,
     handleMouseUp,
+    handleBlur,
     handleOnInput,
-  } = useTextBox({ pageId, textBox });
+  } = useTextBox({ textBox });
 
   return (
     <div
@@ -37,14 +36,15 @@ function TextBox({ pageId, textBox }: TextBoxProps) {
         style={{
           width: `${localSize.width}px`,
           height: `${localSize.height}px`,
-          left: `${position.x}px`,
-          top: `${position.y}px`,
+          left: `${localPos.x}px`,
+          top: `${localPos.y}px`,
         }}
         contentEditable
         suppressContentEditableWarning
         onMouseDown={handleMouseDown}
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
+        onBlur={handleBlur}
         onInput={handleOnInput}
       >
         {isActive && (
@@ -52,12 +52,12 @@ function TextBox({ pageId, textBox }: TextBoxProps) {
             textBox={textBox}
             localSize={localSize}
             setLocalSize={setLocalSize}
-            position={position}
-            setPosition={setPosition}
+            localPos={localPos}
+            setLocalPos={setLocalPos}
             setTextBoxSize={setTextBoxSize}
           />
         )}
-        {text}
+        {textBox.content}
       </div>
     </div>
   );

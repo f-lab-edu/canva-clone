@@ -1,7 +1,7 @@
 import { useCanvasStore } from "../store/canvas.store";
 import { useRedoStore } from "../store/redo.store";
 import { useUndoStore } from "../store/undo.store";
-import { TextBoxType } from "../type/element.type";
+import { Element } from "../type/element.type";
 import { HistoryType } from "../type/history.type";
 import { PageType } from "../type/page.type";
 
@@ -13,145 +13,102 @@ function useHistory() {
   const updatePageByPage = useCanvasStore((state) => state.updatePage);
   const addPage = useCanvasStore((state) => state.addPage);
 
-  const removedTextBox = useCanvasStore((state) => state.removeTextBox);
-  const addTextBox = useCanvasStore((state) => state.addTextBox);
-  const updateTextBox = useCanvasStore((state) => state.updateTextBox);
+  const removedElement = useCanvasStore((state) => state.removeElement);
+  const addElement = useCanvasStore((state) => state.addElement);
+  const updatedElement = useCanvasStore((state) => state.updateElement);
+
+  const getElementById = useCanvasStore((state) => state.getElementById);
 
   const addUndoHistory = (history: HistoryType) => addHistoryOfUndo(history);
 
   const buildHistory = (
-    undoType: 1 | 2 | 3,
-    childPage: PageType | null,
-    pageId: number,
-    childTextBox: TextBoxType | null
+    undoType: "create" | "modify" | "delete",
+    page: PageType | null,
+    element: Element | null
   ): HistoryType => {
+    let content = null;
+
+    if (page) content = page;
+    else content = element;
+
     const history: HistoryType = {
-      id: undoType,
-      child: null,
-      content: null,
+      id: Date.now(),
+      undoType: undoType,
+      type: page ? "page" : "element",
+      content: content!,
     };
-    if (childPage) {
-      const childHistory: HistoryType = {
-        id: childPage.id,
-        child: null,
-        content: childPage,
-      };
-      history.child = childHistory;
-
-      return history;
-    }
-
-    const childPageOfHistory: HistoryType = {
-      id: pageId,
-      child: null,
-      content: null,
-    };
-    history.child = childPageOfHistory;
-
-    if (childTextBox) {
-      const childTextBoxOfHistory = {
-        id: pageId,
-        child: null,
-        content: childTextBox,
-      };
-      const childContentType = {
-        id: 1,
-        child: childTextBoxOfHistory,
-        content: null,
-      };
-      childPageOfHistory.child = childContentType;
-
-      return history;
-    }
 
     return history;
   };
 
   const historyProcess = (isUndo: boolean) => {
+    console.log(`${isUndo ? "== undo ==" : "== redo =="}`);
+    console.log("undo history", undoHistory);
+    console.log("redo history", redoHistory);
+
     const lastHistory = isUndo ? undo() : redo();
+
+    console.log("lastHistory: ", lastHistory);
 
     if (!lastHistory) return;
 
-    /**
-     * 1. delete(create)
-     * 2. modify(modify)
-     * 3. create(delete)
-     */
-    const actionType = lastHistory.id as 1 | 2 | 3;
+    const actionType = lastHistory.undoType as "create" | "modify" | "delete";
 
-    if (!lastHistory.child) return;
-
-    /** Page Depth */
-    const pageHistory = lastHistory.child;
-    const pageId = pageHistory.id;
+    console.log(lastHistory.content);
 
     // 페이지에 관한 동작
-    if (pageHistory.content && !pageHistory.child) {
-      const pageContent = pageHistory.content as PageType;
-      const history = {
-        ...lastHistory,
-        id: actionType === 2 ? actionType : actionType === 1 ? 3 : 1,
-      };
+    if (lastHistory.content && lastHistory.type === "page") {
+      const content = lastHistory.content as PageType;
+      excuteHistory(
+        actionType,
+        () => (isUndo ? removePageById(content) : addPage(content)),
+        () => updatePageByPage(content),
+        () => (isUndo ? addPage(content) : removePageById(content)),
+        lastHistory,
+        isUndo ? addHistoryOfRedo : addHistoryOfUndo
+      );
+      return;
+    } else {
+      const content = lastHistory.content as Element;
+
+      const history: HistoryType = buildHistory(
+        actionType,
+        null,
+        getElementById(content.pageId, content.id)
+      );
+
+      console.log(
+        `${isUndo ? "if clicked undo: " : "if clicked redo"}`,
+        lastHistory
+      );
 
       excuteHistory(
         actionType,
-        () => removePageById(pageContent),
-        () => updatePageByPage(pageContent),
-        () => addPage(pageContent),
+        () => (isUndo ? removedElement(content) : addElement(content)),
+        () => updatedElement(content),
+        () => (isUndo ? addElement(content) : removedElement(content)),
         history,
         isUndo ? addHistoryOfRedo : addHistoryOfUndo
       );
-
-      return;
-    }
-
-    /** Content of Page Depth */
-    const contentType = pageHistory.child!;
-    const contentHistory = contentType.child!;
-    if (contentHistory.content && !contentHistory.child) {
-      /**
-       * 1. text box
-       * 2. chart
-       * 3. element
-       * 4. draw
-       */
-      if (contentType.id === 1) {
-        const textBoxContent = contentHistory.content as TextBoxType;
-
-        const history = {
-          ...lastHistory,
-          id: actionType === 2 ? actionType : actionType === 1 ? 3 : 1,
-        };
-
-        excuteHistory(
-          actionType,
-          () => removedTextBox(pageId, textBoxContent),
-          () => updateTextBox(pageId, textBoxContent),
-          () => addTextBox(pageId, textBoxContent),
-          history,
-          isUndo ? addHistoryOfRedo : addHistoryOfUndo
-        );
-      }
-
       return;
     }
   };
   const excuteHistory = (
-    actionType: 1 | 2 | 3,
+    actionType: "create" | "modify" | "delete",
     removeFun: () => void,
     updateFun: () => void,
     addFun: () => void,
-    history: HistoryType,
+    history: HistoryType | null,
     addHistory: (history: HistoryType) => void
   ) => {
     // 삭제(생성)
-    if (actionType === 1) removeFun();
+    if (actionType === "create") removeFun();
     // 재수정(수정)
-    else if (actionType === 2) updateFun();
+    else if (actionType === "modify") updateFun();
     // 재생성(삭제)
-    else if (actionType === 3) addFun();
+    else if (actionType === "delete") addFun();
 
-    addHistory(history);
+    if (history) addHistory(history);
   };
 
   return {

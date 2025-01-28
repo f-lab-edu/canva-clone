@@ -18,20 +18,20 @@ function PageHeader({ page }: PageHeaderProps) {
     const newPage = addPage(null);
     if (!newPage) return;
 
-    const history = buildHistory(1, newPage, newPage.id, null);
+    const history = buildHistory("create", newPage, null);
     addUndoHistory(history);
   };
   const handleClickPastePage = () => {
     const newPage = copyPageById(page.id);
     if (!newPage) return;
 
-    const history = buildHistory(1, newPage, newPage.id, null);
+    const history = buildHistory("create", newPage, null);
     addUndoHistory(history);
   };
   const handleClickRemovePage = () => {
     removePage(page);
 
-    const history = buildHistory(3, page, page.id, null);
+    const history = buildHistory("delete", page, null);
     addUndoHistory(history);
   };
 

@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import { TextBoxType } from "../type/element.type";
+import { Element } from "../type/element.type";
 import { PageType } from "../type/page.type";
 
 interface CanvasStoreType {
@@ -8,16 +8,17 @@ interface CanvasStoreType {
   copyPageById: (pageId: number) => PageType | null;
   removePage: (page: PageType) => void;
   updatePage: (page: PageType) => void;
-  addTextBox: (pageId: number, textBox: TextBoxType) => void;
-  updateTextBox: (pageId: number, textBox: TextBoxType) => void;
-  removeTextBox: (pageId: number, textBox: TextBoxType) => void;
+  addElement: (element: Element) => void;
+  updateElement: (element: Element) => void;
+  removeElement: (element: Element) => void;
+  getElementById: (pageId: number, elementId: number) => Element | null;
 }
 
 export const useCanvasStore = create<CanvasStoreType>((set) => ({
   pageList: [
     {
       id: 123,
-      textBoxs: [],
+      elements: [],
       title: "Page 1",
     },
   ],
@@ -28,7 +29,7 @@ export const useCanvasStore = create<CanvasStoreType>((set) => ({
         ? page
         : {
             id: Date.now(),
-            textBoxs: [],
+            elements: [],
             title: `Page ${
               Number(
                 state.pageList[state.pageList.length - 1].title.replace(
@@ -74,48 +75,65 @@ export const useCanvasStore = create<CanvasStoreType>((set) => ({
         }),
       ],
     })),
-  addTextBox: (pageId: number, textBox: TextBoxType) =>
+  addElement: (element: Element) =>
     set((state) => ({
       pageList: state.pageList.map((page) => {
-        if (page.id !== pageId) return page;
+        if (page.id !== element.pageId) return page;
 
         return {
           ...page,
-          textBoxs: [...page.textBoxs, textBox],
+          elements: [...page.elements, element],
         };
       }),
     })),
-  updateTextBox: (pageId: number, targetTextBox: TextBoxType) => {
+  updateElement: (element: Element) => {
     set((state) => ({
       pageList: state.pageList.map((page) => {
-        if (page.id !== pageId) return page;
+        if (page.id !== element.pageId) return page;
 
-        const updatedTextBox = page.textBoxs.map((textBox) => {
-          if (textBox.id !== targetTextBox.id) return textBox;
+        const updatedElements = page.elements.map((textBox) => {
+          if (textBox.id !== element.id) return textBox;
 
-          return targetTextBox;
+          return element;
         });
 
         return {
           ...page,
-          textBoxs: updatedTextBox,
+          elements: updatedElements,
         };
       }),
     }));
   },
-  removeTextBox: (pageId: number, targetTextBox: TextBoxType) =>
+  removeElement: (element: Element) =>
     set((state) => ({
       pageList: state.pageList.map((page) => {
-        if (page.id !== pageId) return page;
+        if (page.id !== element.pageId) return page;
 
-        const removedTextBox = page.textBoxs.filter(
-          (textBox) => textBox.id !== targetTextBox.id
+        const removedElements = page.elements.filter(
+          (textBox) => textBox.id !== element.id
         );
 
         return {
           ...page,
-          textBoxs: removedTextBox,
+          elements: removedElements,
         };
       }),
     })),
+  getElementById: (pageId: number, elementId: number) => {
+    let responseElement: Element | null = null;
+
+    set((state) => {
+      const currentPage = state.pageList.filter(
+        (page) => page.id === pageId
+      )[0];
+
+      responseElement = currentPage.elements.filter(
+        (element) => element.id === elementId
+      )[0];
+
+      return state;
+    });
+
+    return responseElement;
+  },
 }));

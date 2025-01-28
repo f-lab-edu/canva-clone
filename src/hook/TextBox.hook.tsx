@@ -4,63 +4,60 @@ import { Position, Size, TextBoxType } from "../type/element.type";
 import useHistory from "./History.hook";
 
 interface TextBoxHookProps {
-  pageId: number;
   textBox: TextBoxType;
 }
 
-function useTextBox({ pageId, textBox }: TextBoxHookProps) {
+function useTextBox({ textBox }: TextBoxHookProps) {
   const [text, setText] = useState(textBox.content);
   const [localSize, setLocalSize] = useState(textBox.size);
   const [isDragging, setIsDragging] = useState(false);
   const [offset, setOffset] = useState({ x: 0, y: 0 });
-  const [position, setPosition] = useState(textBox.position);
+  const [localPos, setLocalPos] = useState(textBox.position);
   const [isActive, setIsActive] = useState(false);
 
-  const updateTextBox = useCanvasStore((state) => state.updateTextBox);
+  const updateTextBox = useCanvasStore((state) => state.updateElement);
 
   const { buildHistory, addUndoHistory } = useHistory();
 
   const handleMouseUp = () => {
     setIsDragging(false);
 
-    if (text !== textBox.content) addTextBoxContentHistory();
-
     if (localSize !== textBox.size) addTextBoxSizeAndPositionHistory();
     else setTextBoxSize(textBox.position, localSize);
   };
   const addTextBoxSizeAndPositionHistory = () => {
-    const history = buildHistory(2, null, pageId, textBox);
+    const history = buildHistory("modify", null, textBox);
     addUndoHistory(history);
 
     const newSizeTextBox: TextBoxType = {
       ...textBox,
       size: localSize,
-      position,
+      position: localPos,
     };
-
-    updateTextBox(pageId, newSizeTextBox);
+    updateTextBox(newSizeTextBox);
   };
   const addTextBoxContentHistory = () => {
-    const history = buildHistory(2, null, pageId, textBox);
+    const history = buildHistory("modify", null, textBox);
+    console.log(textBox);
     addUndoHistory(history);
+
     const newContentTextBox: TextBoxType = {
       ...textBox,
       content: text,
     };
-
-    updateTextBox(pageId, newContentTextBox);
+    updateTextBox(newContentTextBox);
   };
   const handleMouseDown = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
     setIsDragging(true);
     setOffset({
-      x: e.clientX - position.x,
-      y: e.clientY - position.y,
+      x: e.clientX - localPos.x,
+      y: e.clientY - localPos.y,
     });
   };
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
     if (!isDragging) return;
 
-    setPosition({
+    setLocalPos({
       x: e.clientX - offset.x,
       y: e.clientY - offset.y,
     });
@@ -69,6 +66,10 @@ function useTextBox({ pageId, textBox }: TextBoxHookProps) {
   const handleOnInput = (e: FormEvent<HTMLDivElement>) => {
     const newText = e.currentTarget.innerText;
     setText(newText);
+  };
+  const handleBlur = () => {
+    console.log("== handle blur ==\n", text, textBox.content);
+    if (text !== textBox.content) addTextBoxContentHistory();
   };
   const handleMouseEnter = () => setIsActive(true);
   const handleMouseLeave = () => {
@@ -83,11 +84,11 @@ function useTextBox({ pageId, textBox }: TextBoxHookProps) {
       size,
     };
 
-    updateTextBox(pageId, newTextBox);
+    updateTextBox(newTextBox);
   };
 
   useEffect(() => {
-    setPosition(textBox.position);
+    setLocalPos(textBox.position);
   }, [textBox.position]);
 
   useEffect(() => {
@@ -100,8 +101,8 @@ function useTextBox({ pageId, textBox }: TextBoxHookProps) {
 
   return {
     text,
-    position,
-    setPosition,
+    localPos,
+    setLocalPos,
     setTextBoxSize,
     localSize,
     setLocalSize,
@@ -111,6 +112,7 @@ function useTextBox({ pageId, textBox }: TextBoxHookProps) {
     handleMouseLeave,
     handleMouseMove,
     handleMouseUp,
+    handleBlur,
     handleOnInput,
   };
 }

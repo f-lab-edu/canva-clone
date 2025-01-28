@@ -6,8 +6,8 @@ interface ResizingButtonProps {
     x: string;
     y: string;
   };
-  position: Position;
-  setPosition: React.Dispatch<React.SetStateAction<Position>>;
+  localPos: Position;
+  setLocalPos: React.Dispatch<React.SetStateAction<Position>>;
   textBox: TextBoxType;
   localSize: Size;
   setLocalSize: React.Dispatch<React.SetStateAction<Size>>;
@@ -16,8 +16,8 @@ interface ResizingButtonProps {
 
 function ResizingButton({
   direction,
-  position,
-  setPosition,
+  localPos,
+  setLocalPos,
   textBox,
   localSize,
   setLocalSize,
@@ -55,8 +55,8 @@ function ResizingButton({
     );
 
     const newPosition = {
-      x: position.x,
-      y: position.y,
+      x: localPos.x,
+      y: localPos.y,
     };
     if (direction.x === "left") {
       newPosition.x = newPosition.x - (newWidth - localSize.width);
@@ -66,7 +66,7 @@ function ResizingButton({
     } else if (direction.x === "right" && direction.y === "top") {
       newPosition.y = newPosition.y - (newHeight - localSize.height);
     }
-    setPosition(newPosition);
+    setLocalPos(newPosition);
 
     const size = { width: newWidth, height: newHeight } as Size;
 
