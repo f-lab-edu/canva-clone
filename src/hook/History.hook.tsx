@@ -56,7 +56,7 @@ function useHistory() {
         () => (isUndo ? removePageById(content) : addPage(content)),
         () => updatePageByPage(content),
         () => (isUndo ? addPage(content) : removePageById(content)),
-        () => addHistory(lastHistory, isUndo)
+        () => addHistory(lastHistory, !isUndo)
       );
       return;
     } else {
