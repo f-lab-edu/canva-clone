@@ -1,10 +1,10 @@
 import { IoClose } from "react-icons/io5";
 import { PaletteType } from "../../type/palette.type";
-import ChartsPalette from "./palettes/ChartsPalette";
-import TextPalette from "./palettes/TextPalette";
+import ChartsPalette from "./palettes/Chart/ChartsPalette";
 import DesignPalette from "./palettes/DesignPalette";
 import DrawPalette from "./palettes/DrawPalette";
 import ElementsPalette from "./palettes/ElementsPalette";
+import TextPalette from "./palettes/TextPalette";
 import UploadsPalette from "./palettes/UploadsPalette";
 
 interface ActivedPalette {
@@ -41,16 +41,12 @@ function ActivedPalette({ activeType, inactivePalette }: ActivedPalette) {
   };
 
   return (
-    <>
-      {activeType && (
-        <div className="bg-white w-[30rem] h-[90%] flex flex-col justify-start items-start rounded-md p-5 gap-y-5">
-          <button className="self-end" onClick={inactivePalette}>
-            <IoClose size="20" />
-          </button>
-          {getTargetPalette()}
-        </div>
-      )}
-    </>
+    <div className="bg-white min-w-[80%] h-[90%] flex flex-col justify-start items-start rounded-md p-5 gap-y-5 z-30">
+      <button className="self-end" onClick={inactivePalette}>
+        <IoClose size="20" />
+      </button>
+      {getTargetPalette()}
+    </div>
   );
 }
 

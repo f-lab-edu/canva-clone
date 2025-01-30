@@ -16,6 +16,9 @@ function useElement({ element }: ElementHookProps) {
   const [isActive, setIsActive] = useState(false);
 
   const updateElement = useCanvasStore((state) => state.updateElement);
+  const setCurrentElementId = useCanvasStore(
+    (state) => state.setCurrentElementId
+  );
 
   const addHistory = useHistoryStore((state) => state.addHistory);
   const { buildHistory } = useHistory();
@@ -69,6 +72,10 @@ function useElement({ element }: ElementHookProps) {
 
     updateElement(newElement);
   };
+  const handleClick = () => {
+    setCurrentElementId(element.id);
+    setIsActive(true);
+  };
 
   useEffect(() => {
     setLocalPos(element.position);
@@ -85,6 +92,7 @@ function useElement({ element }: ElementHookProps) {
     localSize,
     setLocalSize,
     isActive,
+    handleClick,
     handleMouseDown,
     handleMouseEnter,
     handleMouseLeave,

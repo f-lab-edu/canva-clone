@@ -36,7 +36,7 @@ function PageHeader({ page }: PageHeaderProps) {
   };
 
   return (
-    <div className="w-[80%] flex flex-row justify-between">
+    <div className="w-full flex flex-row justify-between">
       <h3>
         <span className="text-base">{page.title}</span>
         <span className="text-sm text-gray-500"> - Add page title</span>

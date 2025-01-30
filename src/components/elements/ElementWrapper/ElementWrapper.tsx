@@ -19,6 +19,7 @@ function ElementWrapper({
     setLocalSize,
     isActive,
     setElementSize,
+    handleClick,
     handleMouseDown,
     handleMouseEnter,
     handleMouseLeave,
@@ -35,6 +36,7 @@ function ElementWrapper({
       className="w-full h-full relative"
       onMouseMove={handleMouseMove}
       onMouseUp={handleMouseUp}
+      onClick={handleClick}
     >
       <div
         className={`absolute p-2 resize cursor-auto select-text outline-none ${
