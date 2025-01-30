@@ -1,7 +1,7 @@
 import { IoClose } from "react-icons/io5";
 import { PaletteType } from "../../type/palette.type";
-import TextPalette from "./buttons/TextBox/TextPalette";
 import ChartsPalette from "./palettes/ChartsPalette";
+import TextPalette from "./palettes/TextPalette";
 import DesignPalette from "./palettes/DesignPalette";
 import DrawPalette from "./palettes/DrawPalette";
 import ElementsPalette from "./palettes/ElementsPalette";
