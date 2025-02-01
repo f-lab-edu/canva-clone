@@ -8,7 +8,7 @@ interface PageProps {
 
 function Page({ page }: PageProps) {
   return (
-    <article className="w-full flex flex-col justify-center items-center gap-y-2">
+    <article className="min-w-[80%] max-w-[90%] flex flex-col justify-center items-center gap-y-2">
       <PageHeader page={page} />
       <DrawArea page={page} />
     </article>

@@ -1,6 +1,8 @@
+import { ChartType } from "../../type/chart.type";
 import { TextBoxType } from "../../type/element.type";
 import { PageType } from "../../type/page.type";
-import TextBox from "../palette/buttons/TextBox/TextBox";
+import Chart from "../elements/Chart/Chart";
+import TextBox from "../elements/TextBox/TextBox";
 
 interface DrawAreaProps {
   page: PageType;
@@ -8,12 +10,14 @@ interface DrawAreaProps {
 
 function DrawArea({ page }: DrawAreaProps) {
   return (
-    <div className="w-[80%] aspect-video bg-white">
+    <div className="w-full aspect-video bg-white">
       {page.elements.map((element) => {
         if (!element) return null;
 
         if (element.type === "textBox")
           return <TextBox key={element.id} textBox={element as TextBoxType} />;
+        else if (element.type === "chart")
+          return <Chart key={element.id} chart={element as ChartType} />;
 
         return null;
       })}

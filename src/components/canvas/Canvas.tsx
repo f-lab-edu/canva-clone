@@ -6,7 +6,7 @@ function Canvas() {
   const pageList = useCanvasStore((state) => state.pageList);
 
   return (
-    <section className="w-full h-full overflow-y-auto flex flex-col justify-start gap-y-10 py-5">
+    <section className="w-full h-full overflow-y-auto flex flex-col justify-center items-center gap-y-10 py-5">
       {pageList.map((page: PageType) => (
         <Page key={page.id} page={page} />
       ))}

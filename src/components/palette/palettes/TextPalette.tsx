@@ -1,6 +1,6 @@
-import useHistory from "../../../../hook/History.hook";
-import { useCanvasStore } from "../../../../store/canvas.store";
-import { TextBoxType } from "../../../../type/element.type";
+import useHistory from "../../../hook/History.hook";
+import { useCanvasStore } from "../../../store/canvas.store";
+import { TextBoxType } from "../../../type/element.type";
 
 function TextPalette() {
   const addTextBox = useCanvasStore((state) => state.addElement);

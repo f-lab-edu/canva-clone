@@ -4,6 +4,10 @@ import { PageType } from "../type/page.type";
 
 interface CanvasStoreType {
   pageList: PageType[];
+  currentPageId: number;
+  setCurrentPageId: (pageId: number) => void;
+  currentElementId: number | null;
+  setCurrentElementId: (elementId: number) => void;
   addPage: (page: PageType | null) => PageType | null;
   copyPageById: (pageId: number) => PageType | null;
   removePage: (page: PageType) => void;
@@ -12,6 +16,7 @@ interface CanvasStoreType {
   updateElement: (element: Element) => void;
   removeElement: (element: Element) => void;
   getElementById: (pageId: number, elementId: number) => Element | null;
+  getPageById: (pageId: number) => PageType | null;
 }
 
 export const useCanvasStore = create<CanvasStoreType>((set) => ({
@@ -22,6 +27,11 @@ export const useCanvasStore = create<CanvasStoreType>((set) => ({
       title: "Page 1",
     },
   ],
+  currentPageId: 123,
+  currentElementId: null,
+  setCurrentPageId: (pageId: number) => set({ currentPageId: pageId }),
+  setCurrentElementId: (elementId: number) =>
+    set({ currentElementId: elementId }),
   addPage: (page: PageType | null) => {
     let newPage = null;
     set((state) => {
@@ -135,5 +145,15 @@ export const useCanvasStore = create<CanvasStoreType>((set) => ({
     });
 
     return responseElement;
+  },
+  getPageById: (pageId: number) => {
+    let responsePage: PageType | null = null;
+    set((state) => {
+      responsePage = state.pageList.filter((page) => page.id === pageId)[0];
+
+      return state;
+    });
+
+    return responsePage;
   },
 }));

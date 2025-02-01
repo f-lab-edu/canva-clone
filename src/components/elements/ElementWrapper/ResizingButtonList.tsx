@@ -1,22 +1,22 @@
-import { Position, Size, TextBoxType } from "../../../../type/element.type";
+import { Element, Position, Size } from "../../../type/element.type";
 import ResizingButton from "./ResizingButton";
 
 interface ResizingButtonListProps {
   localPos: Position;
   setLocalPos: React.Dispatch<React.SetStateAction<Position>>;
-  textBox: TextBoxType;
+  element: Element;
   localSize: Size;
   setLocalSize: React.Dispatch<React.SetStateAction<Size>>;
-  setTextBoxSize: (position: Position, size: Size) => void;
+  setElementSize: (position: Position, size: Size) => void;
 }
 
 function ResizingButtonList({
   localPos,
   setLocalPos,
-  textBox,
+  element,
   localSize,
   setLocalSize,
-  setTextBoxSize,
+  setElementSize,
 }: ResizingButtonListProps) {
   return (
     <>
@@ -35,8 +35,8 @@ function ResizingButtonList({
             direction={direction}
             localPos={localPos}
             setLocalPos={setLocalPos}
-            setTextBoxSize={setTextBoxSize}
-            textBox={textBox}
+            setElementSize={setElementSize}
+            element={element}
           />
         );
       })}

@@ -1,33 +1,42 @@
-import useTextBox from "../../../../hook/TextBox.hook";
-import { TextBoxType } from "../../../../type/element.type";
+import { PropsWithChildren } from "react";
+import useElement from "../../../hook/element.hook";
+import useTextBox from "../../../hook/TextBox.hook";
+import { Element, TextBoxType } from "../../../type/element.type";
 import ResizingButtonList from "./ResizingButtonList";
 
-interface TextBoxProps {
-  textBox: TextBoxType;
+interface ElementWrapper {
+  element: Element;
 }
 
-function TextBox({ textBox }: TextBoxProps) {
+function ElementWrapper({
+  element,
+  children,
+}: PropsWithChildren<ElementWrapper>) {
   const {
     localPos,
     setLocalPos,
     localSize,
     setLocalSize,
-    setTextBoxSize,
     isActive,
+    setElementSize,
+    handleClick,
     handleMouseDown,
     handleMouseEnter,
     handleMouseLeave,
     handleMouseMove,
     handleMouseUp,
-    handleBlur,
-    handleOnInput,
-  } = useTextBox({ textBox });
+  } = useElement({ element });
+
+  const { handleBlur, handleOnInput } = useTextBox({
+    textBox: element.type === "textBox" ? (element as TextBoxType) : null,
+  });
 
   return (
     <div
       className="w-full h-full relative"
       onMouseMove={handleMouseMove}
       onMouseUp={handleMouseUp}
+      onClick={handleClick}
     >
       <div
         className={`absolute p-2 resize cursor-auto select-text outline-none ${
@@ -44,23 +53,25 @@ function TextBox({ textBox }: TextBoxProps) {
         onMouseDown={handleMouseDown}
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
-        onBlur={handleBlur}
-        onInput={handleOnInput}
+        {...(element.type === "textBox" && {
+          onBlur: handleBlur,
+          onInput: handleOnInput,
+        })}
       >
         {isActive && (
           <ResizingButtonList
-            textBox={textBox}
+            element={element}
             localSize={localSize}
             setLocalSize={setLocalSize}
             localPos={localPos}
             setLocalPos={setLocalPos}
-            setTextBoxSize={setTextBoxSize}
+            setElementSize={setElementSize}
           />
         )}
-        {textBox.content}
+        {children}
       </div>
     </div>
   );
 }
 
-export default TextBox;
+export default ElementWrapper;

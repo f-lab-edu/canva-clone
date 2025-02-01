@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Position, Size, TextBoxType } from "../../../../type/element.type";
+import { Element, Position, Size } from "../../../type/element.type";
 
 interface ResizingButtonProps {
   direction: {
@@ -8,20 +8,20 @@ interface ResizingButtonProps {
   };
   localPos: Position;
   setLocalPos: React.Dispatch<React.SetStateAction<Position>>;
-  textBox: TextBoxType;
+  element: Element;
   localSize: Size;
   setLocalSize: React.Dispatch<React.SetStateAction<Size>>;
-  setTextBoxSize: (position: Position, size: Size) => void;
+  setElementSize: (position: Position, size: Size) => void;
 }
 
 function ResizingButton({
   direction,
   localPos,
   setLocalPos,
-  textBox,
+  element,
   localSize,
   setLocalSize,
-  setTextBoxSize,
+  setElementSize,
 }: ResizingButtonProps) {
   const [isDragging, setIsDragging] = useState(false);
   const [offset, setOffset] = useState({ x: 0, y: 0 });
@@ -29,7 +29,7 @@ function ResizingButton({
   const handleMouseUp = () => {
     setIsDragging(false);
 
-    setTextBoxSize(textBox.position, localSize);
+    setElementSize(element.position, localSize);
   };
   const handleMouseDown = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
     e.stopPropagation();
@@ -47,11 +47,11 @@ function ResizingButton({
     const deltaY = e.clientY - offset.y;
     const newWidth = Math.max(
       50,
-      textBox.size.width + (direction.x === "right" ? deltaX : -deltaX)
+      element.size.width + (direction.x === "right" ? deltaX : -deltaX)
     );
     const newHeight = Math.max(
       50,
-      textBox.size.height + (direction.y === "bottom" ? deltaY : -deltaY)
+      element.size.height + (direction.y === "bottom" ? deltaY : -deltaY)
     );
 
     const newPosition = {
