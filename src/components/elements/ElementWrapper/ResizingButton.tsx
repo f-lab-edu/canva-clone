@@ -76,8 +76,16 @@ function ResizingButton({
   return (
     <div
       style={{
-        width: `${localSize.width + 10}px`,
-        height: `${localSize.height + 10}px`,
+        width: `${
+          element.type !== "draw"
+            ? `${localSize.width + 10}px`
+            : "calc(100% + 10px)"
+        }`,
+        height: `${
+          element.type !== "draw"
+            ? `${localSize.height + 10}px`
+            : "calc(100% + 10px)"
+        }`,
         left: "-5px",
         top: "-5px",
       }}
