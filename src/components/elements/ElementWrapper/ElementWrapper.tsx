@@ -48,7 +48,7 @@ function ElementWrapper({
           left: `${localPos.x}px`,
           top: `${localPos.y}px`,
         }}
-        contentEditable
+        contentEditable={element.type === "textBox"}
         suppressContentEditableWarning
         onMouseDown={handleMouseDown}
         onMouseEnter={handleMouseEnter}

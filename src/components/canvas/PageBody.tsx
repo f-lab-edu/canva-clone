@@ -3,9 +3,11 @@ import { ChartType } from "../../type/chart.type";
 import { DrawType } from "../../type/draw.type";
 import { TextBoxType } from "../../type/element.type";
 import { PageType } from "../../type/page.type";
+import { ShapeType } from "../../type/shape.type";
 import Chart from "../elements/Chart/Chart";
 import Draw from "../elements/Draw/Draw";
 import DrawArea from "../elements/Draw/DrawArea";
+import Shape from "../elements/Shape/Shape";
 import TextBox from "../elements/TextBox/TextBox";
 
 interface DrawAreaProps {
@@ -27,6 +29,8 @@ function PageBody({ page }: DrawAreaProps) {
           return <Chart key={element.id} chart={element as ChartType} />;
         else if (element.type === "draw")
           return <Draw key={element.id} draw={element as DrawType} />;
+        else if (element.type === "shape")
+          return <Shape key={element.id} shape={element as ShapeType} />;
       })}
     </div>
   );

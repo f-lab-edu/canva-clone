@@ -3,7 +3,7 @@ export interface Element {
   id: number;
   position: Position;
   size: Size;
-  type: "textBox" | "chart" | "draw";
+  type: "textBox" | "chart" | "draw" | "shape";
 }
 
 export interface TextBoxType extends Element {
