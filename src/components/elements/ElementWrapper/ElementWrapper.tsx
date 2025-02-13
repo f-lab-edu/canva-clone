@@ -33,7 +33,7 @@ function ElementWrapper({
 
   return (
     <div
-      className="w-full h-full relative"
+      className="w-full h-full absolute left-0 top-0"
       onMouseMove={handleMouseMove}
       onMouseUp={handleMouseUp}
       onClick={handleClick}
@@ -43,10 +43,8 @@ function ElementWrapper({
           isActive && "border border-gray-400 border-dashed"
         }`}
         style={{
-          width: `${element.type !== "draw" ? `${localSize.width}px` : "100%"}`,
-          height: `${
-            element.type !== "draw" ? `${localSize.height}px` : "100%"
-          }`,
+          width: `${localSize.width}px`,
+          height: `${localSize.height}px`,
           left: `${localPos.x}px`,
           top: `${localPos.y}px`,
         }}

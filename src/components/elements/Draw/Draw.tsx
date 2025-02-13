@@ -1,5 +1,7 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { useEffect, useRef, useState } from "react";
 import { useCanvasStore } from "../../../store/canvas.store";
+import { useDrawStore } from "../../../store/draw.store";
 import { DrawType } from "../../../type/draw.type";
 import ElementWrapper from "../ElementWrapper/ElementWrapper";
 
@@ -8,56 +10,57 @@ interface DrawProps {
 }
 
 function Draw({ draw }: DrawProps) {
-  const canvasRef = useRef(draw.ref ? draw.ref.current : null);
+  const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const contextRef = useRef<CanvasRenderingContext2D | null>(null);
-  const [isDrawing, setIsDrawing] = useState(false);
-  const [context, setContext] = useState<CanvasRenderingContext2D | null>(null);
+  const [ctx, setCtx] = useState<CanvasRenderingContext2D | null>(null);
 
   const updateElement = useCanvasStore((state) => state.updateElement);
 
-  const startDrawing = () => setIsDrawing(true);
-  const finishDrawing = () => setIsDrawing(false);
-  const drawing = ({ nativeEvent }: React.MouseEvent<HTMLCanvasElement>) => {
-    if (!context) return;
+  const tool = useDrawStore((state) => state.activedTool);
+  const isActive = useDrawStore((state) => state.isActive);
 
-    const { offsetX, offsetY } = nativeEvent;
-
-    if (!isDrawing) {
-      context.beginPath();
-      context.moveTo(offsetX, offsetY);
-    } else {
-      context.lineTo(offsetX, offsetY);
-      context.stroke();
-    }
-  };
-  const handleFocusOut = () => {};
-
-  useEffect(() => {
+  const initCanvas = () => {
     if (!canvasRef || !canvasRef.current) return;
 
     const canvas = canvasRef.current;
-    const context = canvas.getContext("2d");
+    const canvasCtx = canvas.getContext("2d");
 
-    if (!context) return;
+    if (!canvasCtx || !isActive || !tool) return;
 
-    context.strokeStyle = "black";
-    context.lineWidth = 1;
-    contextRef.current = context;
+    canvas.width = draw.size.width;
+    canvas.height = draw.size.height;
 
-    setContext(context);
-  }, []);
+    canvasCtx.strokeStyle = draw.style.color;
+    canvasCtx.lineWidth = draw.style.width;
+    contextRef.current = canvasCtx;
+
+    setCtx(canvasCtx);
+  };
+
+  useEffect(() => {
+    if (ctx) return;
+    initCanvas();
+  }, [ctx]);
+
+  useEffect(() => {
+    if (!ctx || draw.points.length === 0) return;
+
+    const minX = Math.min(...draw.points.map((p) => p.x));
+    const minY = Math.min(...draw.points.map((p) => p.y));
+
+    ctx.beginPath();
+
+    ctx.moveTo(draw.points[0].x - minX, draw.points[0].y - minY);
+    draw.points.forEach(({ x, y }) => ctx.lineTo(x - minX, y - minY));
+
+    ctx.strokeStyle = draw.style.color;
+    ctx.lineWidth = draw.style.width;
+    ctx.stroke();
+  }, [ctx, draw]);
 
   return (
     <ElementWrapper element={draw}>
-      <canvas
-        onBlur={handleFocusOut}
-        onMouseDown={startDrawing}
-        onMouseUp={finishDrawing}
-        onMouseMove={drawing}
-        onMouseLeave={finishDrawing}
-        className="w-full h-full"
-        ref={canvasRef}
-      />
+      <canvas ref={canvasRef} />
     </ElementWrapper>
   );
 }

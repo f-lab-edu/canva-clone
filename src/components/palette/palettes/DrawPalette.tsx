@@ -1,42 +1,23 @@
-import useHistory from "../../../hook/History.hook";
-import { useCanvasStore } from "../../../store/canvas.store";
-import { DrawType } from "../../../type/draw.type";
+import { DrawTool, useDrawStore } from "../../../store/draw.store";
 
 function DrawPalette() {
-  const addElement = useCanvasStore((state) => state.addElement);
+  const setActiveTool = useDrawStore((state) => state.setActiveTool);
+  const inActiveTool = useDrawStore((state) => state.inActiveTool);
 
-  const { addUndoHistory, buildHistory } = useHistory();
-
-  const handleClickAddDraw = () => {
-    const pageId = 123;
-    const drawElement: DrawType = {
-      id: Date.now(),
-      pageId,
-      position: {
-        x: 0,
-        y: 0,
-      },
-      size: {
-        width: 0,
-        height: 0,
-      },
-      type: "draw",
-      ref: null,
+  const handleClickStartDraw = () => {
+    const tool: DrawTool = {
+      color: "black",
+      width: 1,
     };
-
-    addElement(drawElement);
-
-    addHistory(drawElement);
+    setActiveTool(tool);
   };
-
-  const addHistory = (drawElement: DrawType) => {
-    const history = buildHistory("create", null, drawElement);
-    addUndoHistory(history);
-  };
+  const handleClickStopDraw = () => inActiveTool();
 
   return (
     <div>
-      <button onClick={handleClickAddDraw}>add draw</button>
+      <button onClick={handleClickStartDraw}>start draw</button>
+      <br />
+      <button onClick={handleClickStopDraw}>stop draw</button>
     </div>
   );
 }

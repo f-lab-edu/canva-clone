@@ -1,5 +1,9 @@
-import { Element } from "./element.type";
+import { DrawTool } from "../store/draw.store";
+import { Element, Position } from "./element.type";
+
+export type Points = Position[];
 
 export interface DrawType extends Element {
-  ref: React.MutableRefObject<HTMLCanvasElement | null> | null;
+  points: Points;
+  style: DrawTool;
 }
