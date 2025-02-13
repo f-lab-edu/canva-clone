@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import useHistory from "../../../hook/History.hook";
 import { useCanvasStore } from "../../../store/canvas.store";
 import { useDrawStore } from "../../../store/draw.store";
 import { DrawType } from "../../../type/draw.type";
@@ -15,6 +16,8 @@ function DrawArea() {
 
   const tool = useDrawStore((state) => state.activedTool);
   const isActive = useDrawStore((state) => state.isActive);
+
+  const { addUndoHistory, buildHistory } = useHistory();
 
   const handleMouseDown = ({
     nativeEvent,
@@ -55,6 +58,7 @@ function DrawArea() {
         },
       };
       addElement(element);
+      addHistory(element);
     }
 
     setIsDrawing(false);
@@ -108,6 +112,11 @@ function DrawArea() {
     contextRef.current = canvasCtx;
 
     setContext(canvasCtx);
+  };
+
+  const addHistory = (lineElement: DrawType) => {
+    const history = buildHistory("create", null, lineElement);
+    addUndoHistory(history);
   };
 
   useEffect(() => {
