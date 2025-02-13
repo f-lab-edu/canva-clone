@@ -33,7 +33,7 @@ function ElementWrapper({
 
   return (
     <div
-      className="w-full h-full relative"
+      className="w-full h-full absolute left-0 top-0"
       onMouseMove={handleMouseMove}
       onMouseUp={handleMouseUp}
       onClick={handleClick}

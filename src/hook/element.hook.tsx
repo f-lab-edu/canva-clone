@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useCanvasStore } from "../store/canvas.store";
+import { useDrawStore } from "../store/draw.store";
 import { useHistoryStore } from "../store/history.store";
 import { Element, Position, Size } from "../type/element.type";
 import useHistory from "./History.hook";
@@ -20,10 +21,13 @@ function useElement({ element }: ElementHookProps) {
     (state) => state.setCurrentElementId
   );
 
+  const isDrawActive = useDrawStore((state) => state.isActive);
+
   const addHistory = useHistoryStore((state) => state.addHistory);
   const { buildHistory } = useHistory();
 
   const handleMouseUp = () => {
+    if (isDrawActive) return;
     setIsDragging(false);
 
     if (localSize !== element.size) addHistoryOfElementSize();
@@ -42,6 +46,8 @@ function useElement({ element }: ElementHookProps) {
     updateElement(newElement);
   };
   const handleMouseDown = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+    if (isDrawActive) return;
+
     setIsDragging(true);
     setOffset({
       x: e.clientX - localPos.x,
@@ -49,7 +55,7 @@ function useElement({ element }: ElementHookProps) {
     });
   };
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
-    if (!isDragging) return;
+    if (!isDragging || isDrawActive) return;
 
     setLocalPos({
       x: e.clientX - offset.x,
@@ -57,8 +63,13 @@ function useElement({ element }: ElementHookProps) {
     });
     setIsActive(true);
   };
-  const handleMouseEnter = () => setIsActive(true);
+  const handleMouseEnter = () => {
+    if (isDrawActive) return;
+
+    setIsActive(true);
+  };
   const handleMouseLeave = () => {
+    if (isDrawActive) return;
     setIsActive(false);
 
     setElementSize(element.position, localSize);
@@ -73,6 +84,7 @@ function useElement({ element }: ElementHookProps) {
     updateElement(newElement);
   };
   const handleClick = () => {
+    if (isDrawActive) return;
     setCurrentElementId(element.id);
     setIsActive(true);
   };
