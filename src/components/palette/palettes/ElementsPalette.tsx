@@ -4,13 +4,16 @@ import { Shapes, ShapeType } from "../../../type/shape.type";
 
 function ElementsPalette() {
   const addElement = useCanvasStore((state) => state.addElement);
+  const currentPageId = useCanvasStore((state) => state.currentPageId);
+
   const { buildHistory, addUndoHistory } = useHistory();
 
   const handleClickAddShape = (shape: Shapes) => {
+    if (!currentPageId) return;
     const newShape: ShapeType = {
       id: Date.now(),
       color: "#111111",
-      pageId: 123,
+      pageId: currentPageId,
       position: {
         x: 150,
         y: 150,
