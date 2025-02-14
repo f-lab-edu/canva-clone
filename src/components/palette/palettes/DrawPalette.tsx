@@ -4,25 +4,29 @@ import { DrawTool, useDrawStore } from "../../../store/draw.store";
 const BLUE_PEN: DrawTool = {
   color: "blue",
   width: 1,
+  transparency: 100,
 };
 const RED_PEN: DrawTool = {
   color: "red",
   width: 3,
+  transparency: 100,
 };
 const YELLOW_PEN: DrawTool = {
   color: "yellow",
   width: 5,
+  transparency: 50,
 };
 
 function DrawPalette() {
   const [strokeWidth, setStrokeWidth] = useState<number>(1);
+  const [transparency, setTransparency] = useState<number>(100);
 
   const isActive = useDrawStore((state) => state.isActive);
   const setActiveTool = useDrawStore((state) => state.setActiveTool);
   const inActiveTool = useDrawStore((state) => state.inActiveTool);
-  const changeColor = useDrawStore((state) => state.changeColor);
   const activedTool = useDrawStore((state) => state.activedTool);
   const changeWidth = useDrawStore((state) => state.changeWidth);
+  const changeTransparency = useDrawStore((state) => state.changeTransparency);
 
   const toggleIsDrawing = (tool: DrawTool) => {
     if (isActive && activedTool === tool) return inActiveTool();
@@ -30,19 +34,32 @@ function DrawPalette() {
   };
   const handleChangeStrokeWidth = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = Number(e.target.value);
+
+    if (value < 1) return;
+
     setStrokeWidth(value);
 
     if (isActive) changeWidth(value);
   };
-  const handleChangeColor = () => {};
+  const handleChangeStrokeTransparency = (
+    e: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    const value = Number(e.target.value);
+    setTransparency(value);
+
+    if (value < 1) return;
+
+    if (isActive) changeTransparency(value);
+  };
 
   useEffect(() => {
     if (!activedTool) return;
     setStrokeWidth(activedTool.width);
+    setTransparency(activedTool.transparency);
   }, [activedTool]);
 
   return (
-    <div className="overflow-hidden flex flex-col gap-3 w-full">
+    <div className="overflow-hidden flex flex-col gap-3 w-full h-full justify-center">
       <button
         className={`${
           isActive && activedTool!.color === "blue"
@@ -71,15 +88,36 @@ function DrawPalette() {
       >
         <img src="/src/assets/pens/yellow-pen.img.svg" alt="" />
       </button>
-      <div className="flex flex-col">
-        <label htmlFor="stroke">width</label>
-        <input
-          className="border"
-          type="range"
-          id="stroke"
-          value={strokeWidth}
-          onChange={(e) => handleChangeStrokeWidth(e)}
-        />
+      <div className="flex flex-col mt-10">
+        <label htmlFor="stroke-weight">Stroke Weight</label>
+
+        <div className="flex flex-row justify-between gap-2">
+          <input
+            className="border w-full"
+            type="range"
+            id="stroke=weight"
+            value={strokeWidth}
+            onChange={(e) => handleChangeStrokeWidth(e)}
+          />
+          <span className="w-10 p-1 border border-gray-400 rounded-lg flex justify-center items-center">
+            {strokeWidth}
+          </span>
+        </div>
+      </div>
+      <div className="flex flex-col mt-10">
+        <label htmlFor="transparency">Transparency</label>
+        <div className="flex flex-row justify-between gap-2">
+          <input
+            className="border w-full"
+            type="range"
+            id="transparency"
+            value={transparency}
+            onChange={(e) => handleChangeStrokeTransparency(e)}
+          />
+          <span className="w-10 p-1 border border-gray-400 rounded-lg flex justify-center items-center">
+            {transparency}
+          </span>
+        </div>
       </div>
     </div>
   );

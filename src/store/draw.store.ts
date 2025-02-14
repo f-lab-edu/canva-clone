@@ -5,6 +5,7 @@ export type Colors = "black" | "red" | "blue" | "yellow";
 export type DrawTool = {
   width: number;
   color: Colors;
+  transparency: number;
 };
 
 interface DrawStoreType {
@@ -14,6 +15,7 @@ interface DrawStoreType {
   inActiveTool: () => void;
   changeColor: (color: "black" | "red" | "blue") => void;
   changeWidth: (width: number) => void;
+  changeTransparency: (transparency: number) => void;
 }
 
 export const useDrawStore = create<DrawStoreType>((set) => ({
@@ -43,6 +45,14 @@ export const useDrawStore = create<DrawStoreType>((set) => ({
 
       return {
         activedTool: { ...state.activedTool, width },
+      };
+    }),
+  changeTransparency: (transparency: number) =>
+    set((state) => {
+      if (!state.isActive || !state.activedTool) return state;
+
+      return {
+        activedTool: { ...state.activedTool, transparency },
       };
     }),
 }));

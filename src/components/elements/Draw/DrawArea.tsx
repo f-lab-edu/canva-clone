@@ -110,6 +110,8 @@ function DrawArea() {
 
     canvasCtx.strokeStyle = tool.color;
     canvasCtx.lineWidth = tool.width;
+    canvasCtx.globalAlpha = tool.transparency / 100;
+
     contextRef.current = canvasCtx;
 
     setContext(canvasCtx);
