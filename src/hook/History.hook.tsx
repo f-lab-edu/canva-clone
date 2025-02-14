@@ -42,7 +42,6 @@ function useHistory() {
 
   const historyProcess = (isUndo: boolean) => {
     const lastHistory = getLastHistoryByIsUndo(isUndo);
-    console.log(undoHistory, lastHistory, redoHistory);
 
     if (!lastHistory) return;
 

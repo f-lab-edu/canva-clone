@@ -59,7 +59,7 @@ function Chart({ chart }: ChartProps) {
       labels,
       datasets,
     };
-    console.log(chart.data.labels, data);
+
     setChartData(data);
   }, [chart]);
 

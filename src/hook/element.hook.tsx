@@ -63,12 +63,18 @@ function useElement({ element }: ElementHookProps) {
     });
     setIsActive(true);
   };
-  const handleMouseEnter = () => {
+  const handleMouseEnter = (
+    e: React.MouseEvent<HTMLDivElement, MouseEvent>
+  ) => {
+    e.stopPropagation();
     if (isDrawActive) return;
 
     setIsActive(true);
   };
-  const handleMouseLeave = () => {
+  const handleMouseLeave = (
+    e: React.MouseEvent<HTMLDivElement, MouseEvent>
+  ) => {
+    e.stopPropagation();
     if (isDrawActive) return;
     setIsActive(false);
 
