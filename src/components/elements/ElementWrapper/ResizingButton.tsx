@@ -40,7 +40,7 @@ function ResizingButton({
     });
   };
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
-    e.stopPropagation();
+    // e.stopPropagation();
     if (!isDragging) return;
 
     const deltaX = e.clientX - offset.x;
@@ -88,12 +88,12 @@ function ResizingButton({
     >
       <div
         style={{
-          left: direction.x === "left" ? "4px" : "null",
-          right: direction.x === "left" ? "null" : "5px",
-          top: direction.y === "top" ? "4px" : "null",
-          bottom: direction.y === "top" ? "null" : "4px",
+          left: direction.x === "left" ? "-2.1rem" : "null",
+          right: direction.x === "left" ? "null" : "-2.1rem",
+          top: direction.y === "top" ? "-2.1rem" : "null",
+          bottom: direction.y === "top" ? "null" : "-2.1rem",
         }}
-        className="absolute w-2 h-2"
+        className="absolute w-20 h-20 flex justify-center items-center z-10"
         contentEditable={false}
         onMouseMove={handleMouseMove}
         onMouseUp={handleMouseUp}
@@ -101,13 +101,7 @@ function ResizingButton({
         <div
           onMouseDown={handleMouseDown}
           contentEditable={false}
-          style={{
-            left: direction.x === "left" ? "-3px" : "null",
-            right: direction.x === "left" ? "null" : "-3px",
-            top: direction.y === "top" ? "-3px" : "null",
-            bottom: direction.y === "top" ? "null" : "-3px",
-          }}
-          className="absolute border border-black w-2 h-2 rounded-sm bg-white z-10 select-none"
+          className="border border-black w-2 h-2 rounded-sm bg-white select-none"
         />
       </div>
     </div>

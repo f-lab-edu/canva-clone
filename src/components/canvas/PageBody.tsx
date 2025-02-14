@@ -22,7 +22,7 @@ function PageBody({ page }: DrawAreaProps) {
       {isActive && <DrawArea />}
       {page.elements.map((element) => {
         if (!element) return null;
-        console.log("==== element ====", element);
+
         if (element.type === "textBox")
           return <TextBox key={element.id} textBox={element as TextBoxType} />;
         else if (element.type === "chart")

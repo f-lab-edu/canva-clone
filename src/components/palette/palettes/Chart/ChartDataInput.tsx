@@ -30,8 +30,6 @@ function ChartDataInput({
   const { buildHistory, addUndoHistory } = useHistory();
 
   const handleFocusOut = () => {
-    console.log("handleFocusout");
-
     addHistory();
 
     const labels = chart.data.labels.map((label) => {
@@ -76,7 +74,7 @@ function ChartDataInput({
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const text = e.target.value;
-    console.log("text: ", text);
+
     setValue(text);
   };
 

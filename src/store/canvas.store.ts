@@ -29,10 +29,7 @@ export const useCanvasStore = create<CanvasStoreType>((set) => ({
   ],
   currentPageId: null,
   currentElementId: null,
-  setCurrentPageId: (pageId: number) => {
-    console.log(pageId);
-    set({ currentPageId: pageId });
-  },
+  setCurrentPageId: (pageId: number) => set({ currentPageId: pageId }),
   setCurrentElementId: (elementId: number) =>
     set({ currentElementId: elementId }),
   addPage: (page: PageType | null) => {
