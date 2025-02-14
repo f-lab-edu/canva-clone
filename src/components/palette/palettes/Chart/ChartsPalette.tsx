@@ -25,7 +25,7 @@ function ChartsPalette() {
   const getElementById = useCanvasStore((state) => state.getElementById);
 
   const handleClickAddChartByType = (chartType: "line" | "bar") => {
-    const pageId = 123;
+    if (!currentPageId) return;
 
     const labels: ChartLabel[] = [
       { id: uuid(), label: "1월" },
@@ -69,7 +69,7 @@ function ChartsPalette() {
     };
 
     const chart: ChartType = {
-      pageId,
+      pageId: currentPageId,
       id: Date.now(),
       position,
       size,

@@ -4,14 +4,16 @@ import { TextBoxType } from "../../../type/element.type";
 
 function TextPalette() {
   const addTextBox = useCanvasStore((state) => state.addElement);
+  const currentPageId = useCanvasStore((state) => state.currentPageId);
+
   const { buildHistory, addUndoHistory } = useHistory();
 
   const handleClickAddTextBox = () => {
-    const pageId = 123;
+    if (!currentPageId) return;
     const textBox: TextBoxType = {
       id: Date.now(),
       content: "텍스트를 입력하세요",
-      pageId: pageId,
+      pageId: currentPageId,
       type: "textBox",
       size: {
         width: 150,

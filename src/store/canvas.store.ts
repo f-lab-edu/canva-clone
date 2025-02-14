@@ -4,7 +4,7 @@ import { PageType } from "../type/page.type";
 
 interface CanvasStoreType {
   pageList: PageType[];
-  currentPageId: number;
+  currentPageId: number | null;
   setCurrentPageId: (pageId: number) => void;
   currentElementId: number | null;
   setCurrentElementId: (elementId: number) => void;
@@ -22,14 +22,17 @@ interface CanvasStoreType {
 export const useCanvasStore = create<CanvasStoreType>((set) => ({
   pageList: [
     {
-      id: 123,
+      id: Date.now(),
       elements: [],
       title: "Page 1",
     },
   ],
-  currentPageId: 123,
+  currentPageId: null,
   currentElementId: null,
-  setCurrentPageId: (pageId: number) => set({ currentPageId: pageId }),
+  setCurrentPageId: (pageId: number) => {
+    console.log(pageId);
+    set({ currentPageId: pageId });
+  },
   setCurrentElementId: (elementId: number) =>
     set({ currentElementId: elementId }),
   addPage: (page: PageType | null) => {

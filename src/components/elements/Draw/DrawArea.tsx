@@ -13,6 +13,7 @@ function DrawArea() {
   const [currentLine, setCurrentLine] = useState<DrawType | null>(null);
 
   const addElement = useCanvasStore((state) => state.addElement);
+  const currentPageId = useCanvasStore((state) => state.currentPageId);
 
   const tool = useDrawStore((state) => state.activedTool);
   const isActive = useDrawStore((state) => state.isActive);
@@ -22,12 +23,12 @@ function DrawArea() {
   const handleMouseDown = ({
     nativeEvent,
   }: React.MouseEvent<HTMLCanvasElement>) => {
-    if (!isActive || !tool) return;
+    if (!isActive || !tool || !currentPageId) return;
 
     const { offsetX, offsetY } = nativeEvent;
     const line: DrawType = {
       id: Date.now(),
-      pageId: 123,
+      pageId: currentPageId,
       position: { x: 0, y: 0 },
       size: { width: 0, height: 0 },
       points: [{ x: offsetX, y: offsetY }],
