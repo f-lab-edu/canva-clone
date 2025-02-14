@@ -42,7 +42,7 @@ function DrawPalette() {
   }, [activedTool]);
 
   return (
-    <div className="overflow-hidden">
+    <div className="overflow-hidden flex flex-col gap-3 w-full">
       <button
         className={`${
           isActive && activedTool!.color === "blue"

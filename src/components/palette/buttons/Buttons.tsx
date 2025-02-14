@@ -1,14 +1,7 @@
 import Button from "../../../cva/Button/Button";
 import { PaletteType } from "../../../type/palette.type";
 
-const BUTTONS: PaletteType[] = [
-  "Design",
-  "Elements",
-  "Text",
-  "Draw",
-  "Uploads",
-  "Charts",
-];
+const BUTTONS: PaletteType[] = ["Elements", "Text", "Draw", "Charts"];
 
 interface ButtonsProps {
   activeType: PaletteType;
