@@ -1,5 +1,5 @@
 import { useDrawStore } from "../../store/draw.store";
-import { ChartType } from "../../type/chart.type";
+import { ChartElementType } from "../../type/chart.type";
 import { DrawType } from "../../type/draw.type";
 import { TextBoxType } from "../../type/element.type";
 import { PageType } from "../../type/page.type";
@@ -26,7 +26,7 @@ function PageBody({ page }: DrawAreaProps) {
         if (element.type === "textBox")
           return <TextBox key={element.id} textBox={element as TextBoxType} />;
         else if (element.type === "chart")
-          return <Chart key={element.id} chart={element as ChartType} />;
+          return <Chart key={element.id} chart={element as ChartElementType} />;
         else if (element.type === "draw")
           return <Draw key={element.id} draw={element as DrawType} />;
         else if (element.type === "shape")

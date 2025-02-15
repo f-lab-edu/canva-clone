@@ -1,10 +1,12 @@
 import { ChangeEvent } from "react";
 import useHistory from "../../../../hook/History.hook";
 import { useCanvasStore } from "../../../../store/canvas.store";
-import { ChartType } from "../../../../type/chart.type";
+import { ChartElementType, ChartType } from "../../../../type/chart.type";
+
+const CHART_TYPES = ["bar", "line", "polar", "pie", "doughnut", "bubble"];
 
 interface ChartTypeSelectProps {
-  chart: ChartType;
+  chart: ChartElementType;
 }
 
 function ChartTypeSelect({ chart }: ChartTypeSelectProps) {
@@ -15,9 +17,9 @@ function ChartTypeSelect({ chart }: ChartTypeSelectProps) {
   const handleChangeChartType = (e: ChangeEvent<HTMLSelectElement>) => {
     addHistory();
 
-    const selectedType = e.target.value as "line" | "bar";
+    const selectedType = e.target.value as ChartType;
 
-    const newChart: ChartType = {
+    const newChart: ChartElementType = {
       ...chart,
       chartType: selectedType,
     };
@@ -31,10 +33,17 @@ function ChartTypeSelect({ chart }: ChartTypeSelectProps) {
 
   return (
     <select name="table-type" id="table-type" onChange={handleChangeChartType}>
-      <option value={chart.chartType}>{chart.chartType}</option>
-      <option value={chart.chartType === "bar" ? "line" : "bar"}>
-        {chart.chartType === "bar" ? "line" : "bar"}
+      <option value={chart.chartType}>
+        {chart.chartType.toLocaleUpperCase()}
       </option>
+      {CHART_TYPES.map((chartType) => {
+        if (chartType === chart.chartType) return;
+        return (
+          <option key={chartType} value={chartType}>
+            {chartType.toLocaleUpperCase()}
+          </option>
+        );
+      })}
     </select>
   );
 }

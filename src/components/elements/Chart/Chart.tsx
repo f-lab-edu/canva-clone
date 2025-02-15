@@ -1,14 +1,16 @@
 import {
+  ArcElement,
   BarElement,
   CategoryScale,
   Chart as ChartJS,
   LinearScale,
   LineElement,
   PointElement,
+  RadialLinearScale,
 } from "chart.js";
 import { useEffect, useState } from "react";
-import { Bar, Line } from "react-chartjs-2";
-import { ChartType } from "../../../type/chart.type";
+import { Bar, Bubble, Doughnut, Line, Pie, PolarArea } from "react-chartjs-2";
+import { ChartElementType } from "../../../type/chart.type";
 import ElementWrapper from "../ElementWrapper/ElementWrapper";
 
 ChartJS.register(
@@ -16,11 +18,13 @@ ChartJS.register(
   LinearScale,
   PointElement,
   LineElement,
-  BarElement
+  BarElement,
+  ArcElement,
+  RadialLinearScale
 );
 
 interface ChartProps {
-  chart: ChartType;
+  chart: ChartElementType;
 }
 
 interface ChartDatasetType {
@@ -31,13 +35,44 @@ interface ChartDatasetType {
   borderColor?: string;
   backgroundColor?: string;
 }
-interface ChartDataType {
+interface ChartElementData {
   labels: string[];
   datasets: ChartDatasetType[];
 }
 
 function Chart({ chart }: ChartProps) {
-  const [chartData, setChartData] = useState<ChartDataType | null>(null);
+  const [chartData, setChartData] = useState<ChartElementData | null>(null);
+
+  const getChartElement = () => {
+    if (!chartData) return;
+
+    let chartElement = null;
+    console.log("===== bubble =====");
+    console.log(chartData);
+
+    switch (chart.chartType) {
+      case "bar":
+        chartElement = <Bar data={chartData} options={chart.options} />;
+        break;
+      case "line":
+        chartElement = <Line data={chartData} options={chart.options} />;
+        break;
+      case "bubble":
+        chartElement = <Bubble data={chartData} options={chart.options} />;
+        break;
+      case "doughnut":
+        chartElement = <Doughnut data={chartData} options={chart.options} />;
+        break;
+      case "pie":
+        chartElement = <Pie data={chartData} options={chart.options} />;
+        break;
+      case "polar":
+        chartElement = <PolarArea data={chartData} options={chart.options} />;
+        break;
+    }
+
+    return chartElement;
+  };
 
   useEffect(() => {
     if (!chart.data) return;
@@ -66,13 +101,7 @@ function Chart({ chart }: ChartProps) {
   return (
     <>
       {chartData && (
-        <ElementWrapper element={chart}>
-          {chart.chartType === "line" ? (
-            <Line data={chartData} options={chart.options} />
-          ) : (
-            <Bar data={chartData} options={chart.options} />
-          )}
-        </ElementWrapper>
+        <ElementWrapper element={chart}>{getChartElement()}</ElementWrapper>
       )}
     </>
   );
