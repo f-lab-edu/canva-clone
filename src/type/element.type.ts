@@ -6,10 +6,6 @@ export interface Element {
   type: "textBox" | "chart" | "draw" | "shape";
 }
 
-export interface TextBoxType extends Element {
-  content: string;
-}
-
 export interface Size {
   width: number;
   height: number;
