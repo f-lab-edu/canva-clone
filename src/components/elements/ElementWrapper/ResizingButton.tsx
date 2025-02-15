@@ -82,9 +82,7 @@ function ResizingButton({
         top: "-5px",
       }}
       className="absolute"
-      onMouseLeave={() => {
-        setIsDragging(false);
-      }}
+      onMouseLeave={() => setIsDragging(false)}
     >
       <div
         style={{
