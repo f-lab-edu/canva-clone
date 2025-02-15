@@ -1,7 +1,8 @@
 import { PropsWithChildren } from "react";
 import useElement from "../../../hook/element.hook";
 import useTextBox from "../../../hook/TextBox.hook";
-import { Element, TextBoxType } from "../../../type/element.type";
+import { Element } from "../../../type/element.type";
+import { TextBoxType } from "../../../type/textBox.type";
 import ResizingButtonList from "./ResizingButtonList";
 
 interface ElementWrapper {
@@ -33,7 +34,7 @@ function ElementWrapper({
 
   return (
     <div
-      className="w-full h-full absolute left-0 top-0"
+      className={`absolute left-0 top-0 ${isActive && "w-full h-full"}`}
       onMouseMove={handleMouseMove}
       onMouseUp={handleMouseUp}
       onClick={handleClick}
