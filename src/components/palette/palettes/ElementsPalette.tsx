@@ -78,7 +78,7 @@ function ElementsPalette() {
     <section className="flex flex-col justify-center items-start w-full h-full gap-14">
       {/* rectangles */}
       <article className="w-full flex flex-col gap-y-2">
-        <h4>Rectangles</h4>
+        <h4 className="font-bold">Rectangles</h4>
         <div className="overflow-scroll flex flex-row gap-x-4">
           <button
             onClick={() =>
@@ -104,7 +104,7 @@ function ElementsPalette() {
       </article>
       {/* circles */}
       <article className="w-full gap-y-2 flex flex-col">
-        <h4>Circles</h4>
+        <h4 className="font-bold">Circles</h4>
         <div className="overflow-scroll flex flex-row gap-x-4">
           <button
             onClick={() =>
@@ -142,7 +142,7 @@ function ElementsPalette() {
       </article>
       {/* triangles */}
       <article className="w-full flex flex-col gap-y-2">
-        <h4>Triangles</h4>
+        <h4 className="font-bold">Triangles</h4>
         <div className=" overflow-scroll flex flex-row gap-x-4">
           <button
             onClick={() =>
