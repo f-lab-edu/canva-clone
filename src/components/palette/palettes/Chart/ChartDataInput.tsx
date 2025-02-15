@@ -4,13 +4,13 @@ import { useCanvasStore } from "../../../../store/canvas.store";
 import {
   ChartData,
   ChartDataOfDataset,
-  ChartType,
+  ChartElementType,
   Dataset,
 } from "../../../../type/chart.type";
 
 interface ChartDataInputProp {
   text: string;
-  chart: ChartType;
+  chart: ChartElementType;
   labelId?: string;
   datasetId?: string;
   dataId?: string;
@@ -61,7 +61,7 @@ function ChartDataInput({
       datasets,
       labels,
     };
-    const newChart: ChartType = {
+    const newChart: ChartElementType = {
       ...chart,
       data,
     };

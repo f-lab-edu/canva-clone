@@ -9,7 +9,7 @@ function Header() {
 
   return (
     <section className="bg-white w-full h-16 px-7 flex flex-row justify-start items-center gap-x-10">
-      Canva
+      <h1 className="font-bold font-serif text-2xl">Caraphic</h1>
       <article className="flex flex-row gap-x-5">
         <button onClick={handleClickUndo}>
           <LuUndo2

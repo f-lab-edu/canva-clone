@@ -25,8 +25,16 @@ export interface Dataset {
   borderColor?: string;
   backgroundColor?: string;
 }
-export interface ChartType extends Element {
+export interface ChartElementType extends Element {
   data: ChartData;
   options: ChartOptions;
-  chartType: "line" | "bar";
+  chartType: ChartType;
 }
+
+export type ChartType =
+  | "line"
+  | "bar"
+  | "bubble"
+  | "doughnut"
+  | "pie"
+  | "polar";

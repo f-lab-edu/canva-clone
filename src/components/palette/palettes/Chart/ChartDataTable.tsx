@@ -1,9 +1,9 @@
-import { ChartType } from "../../../../type/chart.type";
+import { ChartElementType } from "../../../../type/chart.type";
 import ChartDataInput from "./ChartDataInput";
 import ChartTypeSelect from "./ChartTypeSelect";
 
 interface ChartDataTableProps {
-  chart: ChartType;
+  chart: ChartElementType;
 }
 
 function ChartDataTable({ chart }: ChartDataTableProps) {
