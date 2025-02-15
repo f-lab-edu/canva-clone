@@ -36,7 +36,7 @@ function TextPalette() {
 
   return (
     <section className="h-full w-full flex flex-col gap-y-5">
-      <h4>Default text styles</h4>
+      <h4 className="font-bold">Default text styles</h4>
       <article className="flex flex-col gap-y-5 justify-center items-start">
         <button
           className="text-3xl font-bold p-2 border border-gray-400 w-full text-start"

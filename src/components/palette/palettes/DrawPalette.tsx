@@ -60,6 +60,7 @@ function DrawPalette() {
 
   return (
     <div className="overflow-hidden flex flex-col gap-3 w-full h-full justify-center">
+      <h4 className="font-bold mb-4">Drawing Pens</h4>
       <button
         className={`${
           isActive && activedTool!.color === "blue"
@@ -89,7 +90,9 @@ function DrawPalette() {
         <img src="/src/assets/pens/yellow-pen.img.svg" alt="" />
       </button>
       <div className="flex flex-col mt-10">
-        <label htmlFor="stroke-weight">Stroke Weight</label>
+        <label htmlFor="stroke-weight" className="font-bold">
+          Stroke Weight
+        </label>
 
         <div className="flex flex-row justify-between gap-2">
           <input
@@ -105,7 +108,9 @@ function DrawPalette() {
         </div>
       </div>
       <div className="flex flex-col mt-10">
-        <label htmlFor="transparency">Transparency</label>
+        <label htmlFor="transparency" className="font-bold">
+          Transparency
+        </label>
         <div className="flex flex-row justify-between gap-2">
           <input
             className="border w-full"
