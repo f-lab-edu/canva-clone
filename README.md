@@ -1,50 +1,95 @@
-# React + TypeScript + Vite
+# Caraphic
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+온라인 그래픽 디자인 도구인 Canva의 기능을 모티브 삼아 구현하였습니다
+텍스트, 도형, 차트 등을 삽입하고 편집할 수 있도록 구현하였으며, 실제 디자인 도구와 유사한 기능을 제공하는 데에 집중하였습니다.
 
-Currently, two official plugins are available:
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+### ⏰ 개발 기간
+`2025.02.01 ~ 현재`
 
-## Expanding the ESLint configuration
+### 📚 기술 스택
+- 언어 : `JavaScript & TypeScript`
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+|📕 라이브러리|
+|-------|
+|React|
+|zustand|
+|tailwind CSS|
+|chart.js|
+|class-variance-authority|
 
-- Configure the top-level `parserOptions` property like this:
+|🫂 Collaboration|
+|------|
+|Github|
 
-```js
-export default tseslint.config({
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
-```
+### 📌 기술적 의사결정
 
-- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
-- Optionally add `...tseslint.configs.stylisticTypeChecked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
+| 기술                      | 설명                                                                                                                                                                   |
+|-------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| **zustand**              | ContextAPI에 비해 보일러플레이트 코드가 적고, **redux DevTools**를 사용할 수 있어 디버깅에 용이하며, 상태 변경 시 불필요한 리렌더링을 최소화하기 좋다는 장점을 지녀 사용하게 되었습니다. |
+| **tailwindCSS**          | **유틸리티 퍼스트(Utility-first)** 접근 방식으로 CSS를 작성할 수 있어 빠르게 스타일링을 적용할 수 있습니다. 또한 **반응형 디자인**과 **커스터마이징**이 용이하고, 팀원들이 일관성 있는 스타일을 유지하기 좋습니다. **불필요한 CSS 코드**를 줄여 최적화가 가능하고, **컴포넌트 기반 개발**에 적합합니다. |
+| **Class-Variance-Authority** | **클래스 기반 스타일링**을 더욱 안전하고, 타입 안전성 있게 관리할 수 있는 라이브러리입니다. CSS 클래스의 조합을 명확히 정의하여 동적인 클래스 이름을 처리할 수 있어 코드 유지보수와 확장성에서 큰 장점이 있습니다. **조건부 스타일링**을 쉽게 적용하고, 타입 오류를 방지하는 데 유용합니다. |
+| **chart.js**             | 다양한 **차트 유형**을 제공하는 라이브러리로, 데이터 시각화가 필요한 프로젝트에서 **간편하게 통합**할 수 있습니다. **반응형 차트**를 지원하며, **애니메이션 효과**를 통해 시각적으로 풍성한 데이터를 제공할 수 있습니다. 직관적이고 사용하기 쉬운 API를 제공하여 빠른 구현이 가능하고, 커스터마이징도 용이합니다. |
 
-```js
-// eslint.config.js
-import react from 'eslint-plugin-react'
 
-export default tseslint.config({
-  // Set the react version
-  settings: { react: { version: '18.3' } },
-  plugins: {
-    // Add the react plugin
-    react,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended rules
-    ...react.configs.recommended.rules,
-    ...react.configs['jsx-runtime'].rules,
-  },
-})
-```
+### 📝 주요 기능
+
+#### 🎨 **드래그 앤 드롭 방식으로 디자인 요소 배치**
+- 사용자는 **드래그 앤 드롭** 방식으로 텍스트, 도형, 차트 등 다양한 디자인 요소를 손쉽게 배치하고 편집할 수 있습니다.
+- 직관적인 UI로 빠르고 쉽게 디자인을 수정할 수 있어 사용자 경험을 개선했습니다.
+
+#### ✏️ **텍스트, 도형, 차트 추가 및 편집**
+- **텍스트**, **도형**, **차트**를 디자인 캔버스에 추가하고 자유롭게 편집할 수 있는 기능을 제공합니다.
+- 사용자가 다양한 디자인 요소를 활용하여 창의적인 작업을 할 수 있도록 돕습니다.
+
+#### 🔄 **되돌리기 (Undo) 및 다시 실행 (Redo) 기능**
+- **Undo**와 **Redo** 기능을 통해 작업 중 발생한 변경사항을 쉽게 되돌리거나 다시 실행할 수 있습니다.
+  - **데이터 구조 최적화**: Stack 자료구조를 사용해 최소한의 연산으로 빠르고 효율적인 undo/redo 기능을 구현했습니다.
+  - **성능 개선**: 상태 변경 시 감지된 부분만 기록해 메모리 사용을 줄이고, 성능을 최적화하여 대량의 변경에도 성능 저하 없이 빠르게 상태를 복원할 수 있습니다.
+  
+#### 🎨 **색상, 투명도 조절 등 다양한 스타일링**
+- **색상**, **투명도** 등 다양한 스타일을 자유롭게 조절하여 디자인 요소의 외관을 세밀하게 커스터마이징할 수 있습니다.
+- 사용자가 원하는 스타일로 디자인을 더욱 개인화할 수 있습니다.
+
+#### 📊 **Chart.js를 활용한 데이터 시각화 및 차트 렌더링 최적화**
+- **Chart.js**를 이용해 **차트 데이터**를 실시간으로 반영하는 기능을 구현했습니다.
+  - 사용자가 테이블에서 직접 입력한 데이터를 즉시 차트에 반영하고, **불필요한 차트 리렌더링**을 방지하여 성능을 최적화했습니다.
+  - **테이블**을 사용해 직관적으로 데이터를 입력하고 관리할 수 있습니다.
+
+#### 🔲 **요소의 크기 조정 기능을 컴포넌트화**
+- 크기 조정 기능을 **모듈화**하여 텍스트 박스, 차트, 도형 등 다양한 요소에 일관되게 적용할 수 있습니다.
+  - **이벤트 최적화**: `onMouseDown`, `onMouseMove`, `onMouseUp` 이벤트를 활용해 크기 조정 기능을 구현하고, 실제 디자인 툴과 같은 부드러운 사용자 경험을 제공합니다.
+  - **결과**: 크기 조정 기능의 재사용성과 유지보수성을 높여 코드 품질을 개선하고, 사용자에게 원활한 경험을 제공했습니다.
+
+### 🛠️ 트러블슈팅: 마우스 이벤트 끊김 문제 해결
+
+<details>
+  <summary>요소 리사이징 중 마우스 이벤트 끊김 문제 해결</summary> 
+
+#### 🧐 문제 상황
+
+드래그하여 크기를 조절하는 UI를 구현하는 과정에서, 마우스를 누른 상태로 컨테이너 밖으로 나가면 리사이징이 멈추는 문제가 발생했습니다.
+
+#### ❌ 원인 분석
+z-index 우선순위 문제
+	•	버튼을 감싸는 div에 mousemove 이벤트를 바인딩했으나, 버튼에만 z-index를 적용했습니다.
+	•	버튼 영역을 벗어나는 순간, z-index가 높은 다른 요소가 우선순위를 가지면서 mousemove 이벤트가 정상적으로 전달되지 않았습니다.
+
+#### ✅ 해결 과정
+처음에는 이벤트가 요소를 감싸는 부분으로 전이되어 끊기는 문제가 발생하는 것으로 판단하여, stopPropagation()을 사용해봤지만 문제가 해결되지 않았습니다. 그 후, useState가 비동기적으로 동작하여 문제가 생기는 것 같아 requestAnimationFrame과 useRef를 사용해보았지만 여전히 해결되지 않았습니다.
+
+다음으로 mouseleave 이벤트가 mousemove 도중에 발생하여 리사이징이 멈추는 문제라고 생각했지만, 이것 역시 원인이 아니었습니다.
+
+결국, z-index 문제가 원인임을 파악하였고, 리사이징 버튼을 감싸는 태그에 z-index 우선순위를 높여 문제를 해결할 수 있었습니다.
+
+#### 🎯 결과
+1. 마우스를 누른 상태에서 컨테이너 밖으로 이동해도 리사이징이 정상적으로 유지됨
+2. z-index 문제로 인한 이벤트 우선순위 충돌이 해결됨
+3. 보다 안정적인 UI/UX 제공 가능
+
+#### 📌 배운 점
+z-index는 이벤트 전달에도 영향을 줄 수 있으므로 이벤트를 감지하는 요소들의 우선순위를 신경 써야 한다.
+
+이 경험을 통해 이벤트 흐름과 UI 요소의 우선순위가 동작에 미치는 영향을 깊이 이해하게 되었고, 더 안정적인 UI를 설계하는 방법을 배울 수 있었습니다.
+
+</details>
