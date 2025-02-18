@@ -179,13 +179,13 @@ function ChartsPalette() {
       </button>
       <div className="w-full min-h-[90px] flex flex-row gap-x-2 overflow-x-scroll">
         <button
-          className="w-[90px] h-[90px] aspect-square p-2 border-gray-400 border"
+          className="w-full flex justify-center items-center aspect-square p-2 border-gray-400 border"
           onClick={() => handleClickAddChartByType("doughnut")}
         >
           <Doughnut data={SAMPLE_DATAS} options={SAMPLE_OPTIONS} />
         </button>
         <button
-          className="w-[90px] h-[90px] aspect-square p-2 border-gray-400 border"
+          className="w-full flex justify-center items-center aspect-square p-2 border-gray-400 border"
           onClick={() => handleClickAddChartByType("pie")}
         >
           <Pie data={SAMPLE_DATAS} options={SAMPLE_OPTIONS} />
