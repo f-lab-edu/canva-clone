@@ -41,13 +41,19 @@ function Button({
 }: buttonProps) {
   return (
     <button
-      className={buttonVariant({
+      className={`${buttonVariant({
         size,
         className,
-      })}
+      })} group`}
       {...props}
     >
-      {imgSrc && <img className={imgClassName} src={imgSrc} alt={imgAlt} />}
+      {imgSrc && (
+        <img
+          className={`group-hover:bg-gray-300 group-hover:rounded-md group-hover:shadow-md p-1 ${imgClassName}`}
+          src={imgSrc}
+          alt={imgAlt}
+        />
+      )}
       {label && <span className={buttonVariant({ font })}>{label}</span>}
     </button>
   );
