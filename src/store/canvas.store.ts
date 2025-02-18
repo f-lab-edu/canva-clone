@@ -15,7 +15,7 @@ interface CanvasStoreType {
   addElement: (element: Element) => void;
   updateElement: (element: Element) => void;
   removeElement: (element: Element) => void;
-  getElementById: (pageId: number, elementId: number) => Element | null;
+  getElementById: (elementId: number) => Element | null;
   getPageById: (pageId: number) => PageType | null;
 }
 
@@ -129,17 +129,15 @@ export const useCanvasStore = create<CanvasStoreType>((set) => ({
         };
       }),
     })),
-  getElementById: (pageId: number, elementId: number) => {
+  getElementById: (elementId: number) => {
     let responseElement: Element | null = null;
 
     set((state) => {
-      const currentPage = state.pageList.filter(
-        (page) => page.id === pageId
-      )[0];
-
-      responseElement = currentPage.elements.filter(
-        (element) => element.id === elementId
-      )[0];
+      state.pageList.forEach((page) => {
+        responseElement = page.elements.filter(
+          (element) => element.id === elementId
+        )[0];
+      });
 
       return state;
     });

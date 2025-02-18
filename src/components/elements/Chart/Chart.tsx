@@ -47,8 +47,6 @@ function Chart({ chart }: ChartProps) {
     if (!chartData) return;
 
     let chartElement = null;
-    console.log("===== bubble =====");
-    console.log(chartData);
 
     switch (chart.chartType) {
       case "bar":

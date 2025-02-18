@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useDrawStore } from "../../store/draw.store";
 import { PaletteType } from "../../type/palette.type";
 import ActivedPalette from "./ActivedPalette";
 import Buttons from "./buttons/Buttons";
@@ -6,10 +7,13 @@ import Buttons from "./buttons/Buttons";
 function Palette() {
   const [activeType, setActiveType] = useState<PaletteType | null>(null);
 
+  const inActiveTool = useDrawStore((state) => state.inActiveTool);
+
   const handleClickButton = (buttonType: PaletteType) => {
     if (!buttonType) return;
     if (activeType === buttonType) return;
 
+    if (buttonType !== "Draw") inActiveTool();
     setActiveType(buttonType);
   };
 

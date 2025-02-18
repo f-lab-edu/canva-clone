@@ -148,8 +148,8 @@ function ChartsPalette() {
   };
 
   useEffect(() => {
-    if (!currentElementId || !currentPageId) return;
-    const currentElement = getElementById(currentPageId, currentElementId);
+    if (!currentElementId) return;
+    const currentElement = getElementById(currentElementId);
 
     if (!currentElement || currentElement.type !== "chart") return;
 

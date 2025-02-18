@@ -64,7 +64,7 @@ function useHistory() {
       const history: HistoryType = buildHistory(
         actionType,
         null,
-        getElementById(content.pageId, content.id)
+        getElementById(content.id)
       );
 
       excuteHistory(

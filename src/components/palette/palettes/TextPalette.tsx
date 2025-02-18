@@ -40,19 +40,25 @@ function TextPalette() {
       <article className="flex flex-col gap-y-5 justify-center items-start">
         <button
           className="text-3xl font-bold p-2 border border-gray-400 w-full text-start"
-          onClick={() => handleClickAddTextBox({ size: "30px", weight: 700 })}
+          onClick={() =>
+            handleClickAddTextBox({ size: "30px", weight: 700, color: "black" })
+          }
         >
           Add a heading
         </button>
         <button
           className="text-xl font-semibold p-2 border border-gray-400 w-full  text-start"
-          onClick={() => handleClickAddTextBox({ size: "20px", weight: 600 })}
+          onClick={() =>
+            handleClickAddTextBox({ size: "20px", weight: 600, color: "black" })
+          }
         >
           Add a subheading
         </button>
         <button
           className="text-base font-light p-2 border border-gray-400 w-full  text-start"
-          onClick={() => handleClickAddTextBox({ size: "16px", weight: 300 })}
+          onClick={() =>
+            handleClickAddTextBox({ size: "16px", weight: 300, color: "black" })
+          }
         >
           Add a body text
         </button>

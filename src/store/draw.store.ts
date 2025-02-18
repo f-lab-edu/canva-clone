@@ -1,6 +1,6 @@
 import { create } from "zustand";
 
-export type Colors = "black" | "red" | "blue" | "yellow";
+export type Colors = string;
 
 export type DrawTool = {
   width: number;
@@ -13,7 +13,7 @@ interface DrawStoreType {
   activedTool: DrawTool | null;
   setActiveTool: (tool: DrawTool) => void;
   inActiveTool: () => void;
-  changeColor: (color: "black" | "red" | "blue") => void;
+  changeColor: (color: Colors) => void;
   changeWidth: (width: number) => void;
   changeTransparency: (transparency: number) => void;
 }
