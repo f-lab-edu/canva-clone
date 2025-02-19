@@ -1,6 +1,7 @@
 import { FormEvent, useEffect, useState } from "react";
 import { useCanvasStore } from "../store/canvas.store";
-import { TextBoxType } from "../type/element.type";
+
+import { TextBoxType } from "../type/textBox.type";
 import useHistory from "./History.hook";
 
 interface TextBoxHookProps {
