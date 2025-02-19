@@ -10,6 +10,7 @@ function TextBox({ textBox }: TextBoxProps) {
     const style = {
       fontSize: textBox.textStyle.size,
       fontWeight: textBox.textStyle.weight,
+      color: textBox.textStyle.color,
     };
     return style;
   };

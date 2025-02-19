@@ -49,7 +49,6 @@ function Shape({ shape }: ShapeProps) {
         background: shape.color,
         borderRadius: rectangle.radius,
       };
-      console.log(rectangle, shape);
 
       return <div style={style} />;
     }
