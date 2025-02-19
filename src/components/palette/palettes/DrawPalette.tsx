@@ -69,7 +69,10 @@ function DrawPalette() {
         }`}
         onClick={() => toggleIsDrawing(BLUE_PEN)}
       >
-        <img src="/src/assets/pens/blue-pen.img.svg" alt="" />
+        <img
+          src="https://wbqryjgwbnmvgjsgksvg.supabase.co/storage/v1/object/public/images/pens/blue-pen.img.svg"
+          alt=""
+        />
       </button>
       <button
         className={`${
@@ -79,7 +82,10 @@ function DrawPalette() {
         }`}
         onClick={() => toggleIsDrawing(RED_PEN)}
       >
-        <img src="/src/assets/pens/red-pen.img.svg" alt="" />
+        <img
+          src="https://wbqryjgwbnmvgjsgksvg.supabase.co/storage/v1/object/public/images/pens/red-pen.img.svg"
+          alt=""
+        />
       </button>
       <button
         className={`${
@@ -89,7 +95,10 @@ function DrawPalette() {
         }`}
         onClick={() => toggleIsDrawing(YELLOW_PEN)}
       >
-        <img src="/src/assets/pens/yellow-pen.img.svg" alt="" />
+        <img
+          src="https://wbqryjgwbnmvgjsgksvg.supabase.co/storage/v1/object/public/images/pens/yellow-pen.img.svg"
+          alt=""
+        />
       </button>
       <div className="flex flex-col mt-10">
         <label htmlFor="stroke-weight" className="font-bold">

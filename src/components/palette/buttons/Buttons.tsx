@@ -21,7 +21,7 @@ function Buttons({ activeType, handleClickButton }: ButtonsProps) {
               buttonType === activeType && "bg-white rounded-lg"
             }`}
             font="default"
-            imgSrc={`/src/assets/paletteButtons/${buttonType}.icon.svg`}
+            imgSrc={`https://wbqryjgwbnmvgjsgksvg.supabase.co/storage/v1/object/public/images/paletteButtons/${buttonType}.icon.svg`}
             imgAlt={`${buttonType} icon`}
             label={buttonType}
             onClick={() => handleClickButton(buttonType)}

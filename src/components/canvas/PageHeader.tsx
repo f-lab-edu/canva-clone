@@ -45,7 +45,7 @@ function PageHeader({ page }: PageHeaderProps) {
         {pageList.length !== 1 && (
           <Button
             className="flex flex-col items-center justify-center gap-1"
-            imgSrc="/src/assets/pages/remove-page.icon.svg"
+            imgSrc="https://wbqryjgwbnmvgjsgksvg.supabase.co/storage/v1/object/public/images/pages/add-page.icon.svg"
             imgAlt="remove page icon"
             imgClassName="w-6 h-6 aspect-square"
             onClick={handleClickRemovePage}
@@ -53,14 +53,14 @@ function PageHeader({ page }: PageHeaderProps) {
         )}
         <Button
           className="flex flex-col items-center justify-center gap-1"
-          imgSrc="/src/assets/pages/page-paste.icon.svg"
+          imgSrc="https://wbqryjgwbnmvgjsgksvg.supabase.co/storage/v1/object/public/images/pages/page-paste.icon.svg"
           imgAlt="paste page icon"
           imgClassName="w-6 h-6 aspect-square"
           onClick={handleClickPastePage}
         />
         <Button
           className="flex flex-col items-center justify-center gap-1"
-          imgSrc="/src/assets/pages/add-page.icon.svg"
+          imgSrc="https://wbqryjgwbnmvgjsgksvg.supabase.co/storage/v1/object/public/images/pages/remove-page.icon.svg"
           imgAlt="add page icon"
           imgClassName="w-6 h-6 aspect-square"
           onClick={handleClickAddPage}
