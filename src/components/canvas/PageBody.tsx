@@ -1,9 +1,10 @@
 import { useDrawStore } from "../../store/draw.store";
 import { ChartElementType } from "../../type/chart.type";
 import { DrawType } from "../../type/draw.type";
-import { TextBoxType } from "../../type/element.type";
+
 import { PageType } from "../../type/page.type";
 import { ShapeType } from "../../type/shape.type";
+import { TextBoxType } from "../../type/textBox.type";
 import Chart from "../elements/Chart/Chart";
 import Draw from "../elements/Draw/Draw";
 import DrawArea from "../elements/Draw/DrawArea";
